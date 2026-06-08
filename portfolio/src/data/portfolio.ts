@@ -7,7 +7,7 @@ export const portfolioData = {
   phone: "+91-9108262847",
   location: "Mangalore, India",
   social: {
-    github: "",
+    github: "https://github.com/Sujan-lab-cell",
     linkedin: "https://linkedin.com/in/sujan-k-s",
     kaggle: "https://kaggle.com",
   },
