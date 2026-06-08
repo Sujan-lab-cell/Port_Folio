@@ -82,7 +82,7 @@ The project is deployed using Vercel.
 
 Sujan KS
 
-Aspiring AI/ML Engineer and Full-Stack Developer
+Aspiring AI/ML Engineer
 
 GitHub: https://github.com/your-github-username
 
