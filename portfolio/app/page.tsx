@@ -13,7 +13,7 @@ export default function Home() {
       addressCountry: "India",
     },
     email: portfolioData.email,
-    url: "https://sujanks.dev",
+    url: "https://github.com/Sujan-lab-cell",
     sameAs: [portfolioData.social.github, portfolioData.social.linkedin, portfolioData.social.kaggle],
     knowsAbout: [
       "Artificial Intelligence",
