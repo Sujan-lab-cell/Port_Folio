@@ -44,10 +44,10 @@ src/
 └── styles/
 
 ## Installation
-
+``` text
 Clone the repository:
 
-git clone https://github.com/your-username/your-repository.git
+git clone https://github.com/Sujan-lab-cell/Port_Folio.git
 
 Navigate to the project directory:
 
@@ -64,7 +64,7 @@ npm run dev
 Build for production:
 
 npm run build
-
+```
 ## Deployment
 
 The project is deployed using Vercel.
