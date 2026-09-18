@@ -110,7 +110,7 @@ export function AboutClient() {
               "Education: B.Tech AIML, N.M.A.M. Institute of Technology, CGPA 8.51",
               "Experience: Machine Learning Intern, breast cancer prediction, 0.85 accuracy",
               "Skills: Python, Deep Learning, Computer Vision, NLP, MLOps foundations",
-              "Certifications: IBM AI Fundamentals, Machine Learning with Python",
+              "Certifications: Intel AI for Future Workforce, IBM AI, Microsoft AINNOVATION, Simplilearn ML",
             ].map((line) => (
               <p key={line} className="flex gap-3 text-sm text-slate-700 dark:text-slate-200">
                 <CheckCircle2 className="mt-0.5 shrink-0 text-emerald-500" size={18} />

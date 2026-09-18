@@ -14,6 +14,8 @@ import {
   Code2,
   Globe,
   Radio,
+  Bot,
+  Workflow,
 } from "lucide-react";
 import { portfolioData } from "@/src/data/portfolio";
 
@@ -24,14 +26,21 @@ interface IntroScreenProps {
 const ROLES = [
   "AI / ML ENGINEER",
   "COMPUTER VISION SPECIALIST",
+  "ROBOTIC OPERATING SYSTEMS 2 (ROS 2)",
+  "AUTOMATION & REINFORCEMENT LEARNING",
   "MULTILINGUAL NLP DEVELOPER",
   "DEEP LEARNING ARCHITECT",
+  "Generative Adversal Networks Developer",
+  "Large Language Model and RAG Developer"
 ];
 
 const HIGHLIGHT_BADGES = [
+  { label: "ROS 2 Robotics", icon: Bot },
+  { label: "Automation System", icon: Workflow },
+  { label: "Reinforcement Learning", icon: BrainCircuit },
   { label: "YOLOv8 Vision", icon: Cpu },
   { label: "T5 Transformers", icon: Layers },
-  { label: "WGAN-GP Face Synthesis", icon: BrainCircuit },
+  { label: "WGAN-GP Face Synthesis", icon: Sparkles },
   { label: "PyTorch & MLOps", icon: Code2 },
 ];
 
@@ -336,9 +345,8 @@ export function IntroScreen({ onEnter }: IntroScreenProps) {
               </span>
               <ArrowRight
                 size={22}
-                className={`text-cyan-300 transition-transform duration-300 ${
-                  isHovered ? "translate-x-2 scale-125 text-white" : ""
-                }`}
+                className={`text-cyan-300 transition-transform duration-300 ${isHovered ? "translate-x-2 scale-125 text-white" : ""
+                  }`}
               />
             </span>
           </button>

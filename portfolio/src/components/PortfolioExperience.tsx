@@ -285,14 +285,13 @@ export function PortfolioExperience() {
           <SectionHeading eyebrow="Skills" title="A practical toolkit for applied AI." text="Categorized skills with quick proficiency signals and hover-friendly technology cards." />
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {portfolioData.skills.map((skill) => {
-              const Icon = iconMap[skill.icon as keyof typeof iconMap];
+              const Icon = iconMap[skill.icon as keyof typeof iconMap] || Code2;
               return (
                 <motion.div key={skill.group} whileHover={{ y: -6 }} className="rounded-lg border border-slate-900/10 bg-white/75 p-5 backdrop-blur dark:border-white/10 dark:bg-white/[0.06]">
                   <div className="flex items-center gap-3">
                     <span className="grid h-11 w-11 place-items-center rounded-lg bg-slate-950 text-white dark:bg-white dark:text-slate-950"><Icon size={21} /></span>
-                    <div><h3 className="font-semibold">{skill.group}</h3><p className="text-xs text-slate-500 dark:text-slate-400">{skill.level}% working proficiency</p></div>
+                    <div><h3 className="font-semibold">{skill.group}</h3><p className="text-xs text-slate-500 dark:text-slate-400">{skill.items.length} skills</p></div>
                   </div>
-                  <div className="mt-4 h-2 rounded-full bg-slate-200 dark:bg-white/10"><div className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-blue-500" style={{ width: `${skill.level}%` }} /></div>
                   <div className="mt-4 flex flex-wrap gap-2">{skill.items.map((item) => <span key={item} className="rounded-md border border-slate-900/10 px-2.5 py-1 text-sm text-slate-700 dark:border-white/10 dark:text-slate-200">{item}</span>)}</div>
                 </motion.div>
               );
@@ -375,7 +374,7 @@ export function PortfolioExperience() {
         <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[0.8fr_1.2fr]">
           <div><SectionHeading eyebrow="Resume" title="Interactive resume viewer." text="A fast summary for recruiters with direct download and online viewing paths." /></div>
           <div className="rounded-lg border border-slate-900/10 bg-white/75 p-6 dark:border-white/10 dark:bg-white/[0.06]">
-            {["Education: B.Tech AIML, N.M.A.M. Institute of Technology, CGPA 8.51", "Experience: Machine Learning Intern, breast cancer prediction, 0.85 accuracy", "Skills: Python, Deep Learning, Computer Vision, NLP, MLOps foundations", "Certifications: IBM AI Fundamentals, Machine Learning with Python"].map((line) => <p key={line} className="mb-3 flex gap-3 text-slate-700 dark:text-slate-200"><CheckCircle2 className="mt-0.5 shrink-0 text-emerald-500" size={18} />{line}</p>)}
+            {["Education: B.Tech AIML, N.M.A.M. Institute of Technology, CGPA 8.51", "Experience: Machine Learning Intern, breast cancer prediction, 0.85 accuracy", "Skills: Python, Deep Learning, Computer Vision, NLP, MLOps foundations", "Certifications: Intel AI for Future Workforce, IBM AI, Microsoft AINNOVATION, Simplilearn ML"].map((line) => <p key={line} className="mb-3 flex gap-3 text-slate-700 dark:text-slate-200"><CheckCircle2 className="mt-0.5 shrink-0 text-emerald-500" size={18} />{line}</p>)}
             <div className="mt-6 flex flex-wrap gap-3"><a href="/Sujan_KS_Resume.pdf" download className="inline-flex items-center gap-2 rounded-md bg-slate-950 px-4 py-2 text-sm font-semibold text-white dark:bg-white dark:text-slate-950"><Download size={16} /> Download Resume</a><a href="/Sujan_KS_Resume.pdf" className="inline-flex items-center gap-2 rounded-md border border-slate-900/10 px-4 py-2 text-sm font-semibold dark:border-white/10">View Online <ExternalLink size={16} /></a></div>
           </div>
         </div>
