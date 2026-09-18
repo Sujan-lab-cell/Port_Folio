@@ -41,7 +41,7 @@ export default async function ProjectDetail({ params }: Props) {
     <main className="min-h-screen bg-[#f8fbff] px-4 py-10 text-slate-950 dark:bg-[#05070d] dark:text-white sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
         <Link
-          href="/#projects"
+          href="/projects"
           className="inline-flex items-center gap-2 rounded-md border border-slate-900/10 px-4 py-2 text-sm font-semibold dark:border-white/10"
         >
           <ArrowLeft size={16} /> Back to projects

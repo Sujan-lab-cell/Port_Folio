@@ -1,5 +1,11 @@
-import { PortfolioClient } from "@/src/components/PortfolioClient";
+import Link from "next/link";
 import { portfolioData } from "@/src/data/portfolio";
+import { HomeClient } from "@/src/components/HomeClient";
+
+export const metadata = {
+  title: "Home | Sujan K S - AI/ML Engineer",
+  description: "AI/ML Engineer specializing in Computer Vision, Deep Learning, NLP, and applied AI systems.",
+};
 
 export default function Home() {
   const structuredData = {
@@ -31,7 +37,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <PortfolioClient />
+      <HomeClient />
     </>
   );
 }
