@@ -81,7 +81,6 @@ function SectionHeading({ eyebrow, title, text }: { eyebrow: string; title: stri
 }
 
 export function PortfolioExperience() {
-  const [dark, setDark] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [commandOpen, setCommandOpen] = useState(false);
@@ -90,8 +89,8 @@ export function PortfolioExperience() {
   const [contactSent, setContactSent] = useState(false);
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-  }, [dark]);
+    document.documentElement.classList.add("dark");
+  }, []);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -123,9 +122,9 @@ export function PortfolioExperience() {
   }, [terminalInput]);
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#f8fbff] text-slate-950 selection:bg-cyan-300/40 dark:bg-[#05070d] dark:text-white">
-      <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.20),transparent_34%),radial-gradient(circle_at_80%_20%,rgba(99,102,241,0.14),transparent_30%),linear-gradient(180deg,transparent,rgba(15,23,42,0.05))] dark:bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.16),transparent_34%),radial-gradient(circle_at_80%_20%,rgba(129,140,248,0.13),transparent_30%),linear-gradient(180deg,transparent,rgba(2,6,23,0.8))]" />
-      <div className="fixed inset-0 -z-10 bg-grid opacity-40 dark:opacity-70" />
+    <main className="min-h-screen overflow-hidden bg-[#05070d] text-white selection:bg-cyan-300/40">
+      <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.16),transparent_34%),radial-gradient(circle_at_80%_20%,rgba(129,140,248,0.13),transparent_30%),linear-gradient(180deg,transparent,rgba(2,6,23,0.8))]" />
+      <div className="fixed inset-0 -z-10 bg-grid opacity-70" />
 
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-slate-900/10 bg-white/70 backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/60">
         <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -151,20 +150,13 @@ export function PortfolioExperience() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setCommandOpen(true)}
-              className="hidden items-center gap-2 rounded-md border border-slate-900/10 px-3 py-2 text-sm text-slate-600 transition hover:border-cyan-500/50 hover:text-slate-950 dark:border-white/10 dark:text-slate-300 dark:hover:text-white sm:flex"
+              className="hidden items-center gap-2 rounded-md border border-white/10 px-3 py-2 text-sm text-slate-300 transition hover:text-white sm:flex"
             >
               <Command size={16} /> Ctrl K
             </button>
             <button
-              onClick={() => setDark((value) => !value)}
-              className="grid h-10 w-10 place-items-center rounded-md border border-slate-900/10 text-slate-700 transition hover:border-cyan-500/50 dark:border-white/10 dark:text-slate-200"
-              aria-label="Toggle theme"
-            >
-              {dark ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-            <button
               onClick={() => setMenuOpen((value) => !value)}
-              className="grid h-10 w-10 place-items-center rounded-md border border-slate-900/10 lg:hidden dark:border-white/10"
+              className="grid h-10 w-10 place-items-center rounded-md border border-white/10 lg:hidden"
               aria-label="Toggle menu"
             >
               {menuOpen ? <X size={20} /> : <Menu size={20} />}

@@ -7,10 +7,11 @@
 }
 
 :root {
-  --background: #f8fbff;
-  --foreground: #0f172a;
+  --background: #05070d;
+  --foreground: #f8fafc;
   --accent-blue: #3b82f6;
   --accent-cyan: #06b6d4;
+  color-scheme: dark;
 }
 
 .dark {

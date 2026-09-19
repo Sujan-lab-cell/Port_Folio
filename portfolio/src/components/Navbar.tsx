@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Command, Menu, Moon, Sun, X, ArrowRight } from "lucide-react";
+import { Command, Menu, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export const routes = [
@@ -18,7 +18,7 @@ export const routes = [
   { name: "Contact", path: "/contact" },
 ];
 
-export function Navbar({ dark, setDark }: { dark: boolean; setDark: (fn: (v: boolean) => boolean) => void }) {
+export function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
@@ -70,13 +70,6 @@ export function Navbar({ dark, setDark }: { dark: boolean; setDark: (fn: (v: boo
               className="hidden items-center gap-2 rounded-md border border-slate-900/10 px-3 py-2 text-sm text-slate-600 transition hover:border-cyan-500/50 hover:text-slate-950 dark:border-white/10 dark:text-slate-300 dark:hover:text-white sm:flex"
             >
               <Command size={16} /> Ctrl K
-            </button>
-            <button
-              onClick={() => setDark((value) => !value)}
-              className="grid h-10 w-10 place-items-center rounded-md border border-slate-900/10 text-slate-700 transition hover:border-cyan-500/50 dark:border-white/10 dark:text-slate-200"
-              aria-label="Toggle theme"
-            >
-              {dark ? <Sun size={18} /> : <Moon size={18} />}
             </button>
             <button
               onClick={() => setMenuOpen((value) => !value)}
