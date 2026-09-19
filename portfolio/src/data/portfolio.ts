@@ -13,7 +13,7 @@ export const portfolioData = {
     kaggle: "https://www.kaggle.com/sujanksgowdas",
   },
   stats: [
-    { label: "Projects Built", value: "10", detail: "AI, CV, NLP, ML & Research" },
+    { label: "Projects Built", value: "10+", detail: "AI, CV, NLP, ML & Research" },
     { label: "Tools & Technologies", value: "30+", detail: "AI/ML, CV, NLP, Robotics & Backend" },
     { label: "Credentials", value: "15+", detail: "Awards, Courses & Certifications" },
     { label: "Featured Repositories", value: "10+", detail: "Projects & research" },
