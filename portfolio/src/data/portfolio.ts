@@ -1,8 +1,8 @@
 export const portfolioData = {
   name: "Sujan K S",
-  title: "AI/ML Engineer | Computer Vision Engineer | NLP Enthusiast",
+  title: "AI/ML Engineer | Computer Vision | NLP | Robotics",
   tagline:
-    "Building intelligent systems using AI, Computer Vision, Deep Learning, and NLP Also working On Ros2 Automation And Reinforcement Leanring,to solve real-world problems,",
+    "Building intelligent systems using AI, Computer Vision, Deep Learning, and NLP — while exploring ROS2, robotics, and reinforcement learning to solve real-world problems.",
 
   email: "sujankswork@gmail.com",
   phone: "+91-9108262847",
@@ -13,10 +13,10 @@ export const portfolioData = {
     kaggle: "https://www.kaggle.com/sujanksgowdas",
   },
   stats: [
-    { label: "Projects Built", value: "06", detail: "AI, CV, NLP, analytics" },
-    { label: "Technologies Learned", value: "20+", detail: "Python to MLOps tooling" },
-    { label: "Certifications & Credentials", value: "15+", detail: "AI, ML, Cloud & Awards" },
-    { label: "GitHub Repositories", value: "20+", detail: "Learning in public" },
+    { label: "Projects Built", value: "10", detail: "AI, CV, NLP, ML & Research" },
+    { label: "Tools & Technologies", value: "30+", detail: "AI/ML, CV, NLP, Robotics & Backend" },
+    { label: "Credentials", value: "15+", detail: "Awards, Courses & Certifications" },
+    { label: "Featured Repositories", value: "10+", detail: "Projects & research" },
   ],
   about: {
     education: {
