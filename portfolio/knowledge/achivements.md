@@ -32,3 +32,4 @@
 7. **Lazzarena - Incridea '24** (`/certificates/image copy 2.png`) - Feb 22-24, 2024
 8. **Tulu Tulipu - Incridea '24** (`/certificates/image copy 3.png`) - Feb 22-24, 2024
 9. **Scouts International Jamboree & Jamborette** - 2022
+10. **Runners Up in Football - AI Cup** (`/certificates/SUJAN K S.png`) - NMAMIT Nitte, 2024

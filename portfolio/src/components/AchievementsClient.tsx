@@ -33,7 +33,6 @@ const CATEGORY_TABS = [
   { key: "professional", label: "Professional", categoryName: "Internships & Professional", icon: Briefcase },
   { key: "projects", label: "Projects", categoryName: "Project Credentials", icon: FolderGit2 },
   { key: "activities", label: "Activities", categoryName: "Leadership & Activities", icon: Users },
-  { key: "sports", label: "Sports", categoryName: "Sports & Extracurricular", icon: Medal },
 ];
 
 export function AchievementsClient() {
@@ -66,6 +65,7 @@ export function AchievementsClient() {
       case "Winner Award":
       case "Award":
       case "State Level Award":
+      case "Runners Up":
         return "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 font-semibold";
       case "Internship":
       case "Internship Certificate":

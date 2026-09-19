@@ -117,7 +117,7 @@ export function PortfolioExperience() {
     if (command === "about") return portfolioData.about.careerObjective;
     if (command === "projects") return portfolioData.projects.map((project) => project.title).join(" | ");
     if (command === "skills") return portfolioData.skills.map((skill) => skill.group).join(" | ");
-    if (command === "resume") return "Resume: B.Tech AIML, CGPA 8.51, ML intern, AI/CV/NLP project portfolio.";
+    if (command === "resume") return "Resume: B.Tech AIML, CGPA 8.56, ML intern, AI/CV/NLP project portfolio.";
     if (command === "contact") return `${portfolioData.email} | ${portfolioData.social.linkedin}`;
     return "Available commands: help, about, projects, skills, resume, contact";
   }, [terminalInput]);
@@ -374,7 +374,7 @@ export function PortfolioExperience() {
         <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[0.8fr_1.2fr]">
           <div><SectionHeading eyebrow="Resume" title="Interactive resume viewer." text="A fast summary for recruiters with direct download and online viewing paths." /></div>
           <div className="rounded-lg border border-slate-900/10 bg-white/75 p-6 dark:border-white/10 dark:bg-white/[0.06]">
-            {["Education: B.Tech AIML, N.M.A.M. Institute of Technology, CGPA 8.51", "Experience: Machine Learning Intern, breast cancer prediction, 0.85 accuracy", "Skills: Python, Deep Learning, Computer Vision, NLP, MLOps foundations", "Certifications: Intel AI for Future Workforce, IBM AI, Microsoft AINNOVATION, Simplilearn ML"].map((line) => <p key={line} className="mb-3 flex gap-3 text-slate-700 dark:text-slate-200"><CheckCircle2 className="mt-0.5 shrink-0 text-emerald-500" size={18} />{line}</p>)}
+            {["Education: B.Tech AIML, N.M.A.M. Institute of Technology, CGPA 8.56", "Experience: Machine Learning Intern, breast cancer prediction, 0.85 accuracy", "Skills: Python, Deep Learning, Computer Vision, NLP, MLOps foundations", "Certifications: Intel AI for Future Workforce, IBM AI, Microsoft AINNOVATION, Simplilearn ML"].map((line) => <p key={line} className="mb-3 flex gap-3 text-slate-700 dark:text-slate-200"><CheckCircle2 className="mt-0.5 shrink-0 text-emerald-500" size={18} />{line}</p>)}
             <div className="mt-6 flex flex-wrap gap-3"><a href="/Sujan_KS_Resume.pdf" download className="inline-flex items-center gap-2 rounded-md bg-slate-950 px-4 py-2 text-sm font-semibold text-white dark:bg-white dark:text-slate-950"><Download size={16} /> Download Resume</a><a href="/Sujan_KS_Resume.pdf" className="inline-flex items-center gap-2 rounded-md border border-slate-900/10 px-4 py-2 text-sm font-semibold dark:border-white/10">View Online <ExternalLink size={16} /></a></div>
           </div>
         </div>

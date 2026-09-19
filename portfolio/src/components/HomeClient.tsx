@@ -88,7 +88,7 @@ export function HomeClient() {
     if (command === "about") return portfolioData.about.careerObjective;
     if (command === "projects") return portfolioData.projects.map((project) => project.title).join(" | ");
     if (command === "skills") return portfolioData.skills.map((skill) => skill.group).join(" | ");
-    if (command === "resume") return "Resume: B.Tech AIML, CGPA 8.51, ML intern, AI/CV/NLP project portfolio.";
+    if (command === "resume") return "Resume: B.Tech AIML, CGPA 8.56, ML intern, AI/CV/NLP project portfolio.";
     if (command === "contact") return `${portfolioData.email} | ${portfolioData.social.linkedin}`;
     return "Available commands: help, about, projects, skills, resume, contact";
   }, [terminalInput]);
@@ -165,7 +165,7 @@ export function HomeClient() {
                   View Projects <ArrowRight size={18} />
                 </Link>
                 <Link
-                  href="/about#contact"
+                  href="/contact"
                   className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-900/15 bg-white/50 px-6 py-3.5 text-sm font-semibold text-slate-800 backdrop-blur transition hover:border-cyan-500/60 hover:bg-cyan-400/10 dark:border-white/15 dark:bg-white/5 dark:text-white"
                 >
                   <Mail size={18} /> Contact

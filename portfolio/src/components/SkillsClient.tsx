@@ -51,6 +51,20 @@ const categoryGlows = [
   "border-violet-500/30 hover:border-violet-400/60 hover:shadow-[0_0_25px_rgba(167,139,250,0.15)]",
 ];
 
+const CANONICAL_SKILL_ORDER = [
+  "Programming",
+  "AI / Machine Learning",
+  "Computer Vision",
+  "Speech / Multimodal AI",
+  "Data Science",
+  "Frameworks / Libraries",
+  "Backend / APIs / Deployment",
+  "Databases",
+  "Robotics & Automation",
+  "Tools / Platforms",
+  "CS Foundations",
+];
+
 export function SkillsClient() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
@@ -59,9 +73,17 @@ export function SkillsClient() {
     return portfolioData.skills.reduce((acc, skill) => acc + skill.items.length, 0);
   }, []);
 
+  const orderedSkills = useMemo(() => {
+    return [...portfolioData.skills].sort((a, b) => {
+      const idxA = CANONICAL_SKILL_ORDER.indexOf(a.group);
+      const idxB = CANONICAL_SKILL_ORDER.indexOf(b.group);
+      return (idxA === -1 ? 999 : idxA) - (idxB === -1 ? 999 : idxB);
+    });
+  }, []);
+
   const filteredSkills = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
-    return portfolioData.skills.filter((skillGroup) => {
+    return orderedSkills.filter((skillGroup) => {
       const matchesCategory =
         activeCategory === "all" ||
         skillGroup.group.toLowerCase().includes(activeCategory.toLowerCase());
@@ -74,7 +96,7 @@ export function SkillsClient() {
 
       return matchesCategory && matchesSearch;
     });
-  }, [searchQuery, activeCategory]);
+  }, [searchQuery, activeCategory, orderedSkills]);
 
   return (
     <div className="min-h-screen px-4 py-12 sm:px-6 lg:px-8">
@@ -185,7 +207,7 @@ export function SkillsClient() {
             >
               All Domains ({portfolioData.skills.length})
             </button>
-            {portfolioData.skills.map((skill) => (
+            {orderedSkills.map((skill) => (
               <button
                 key={skill.group}
                 onClick={() => setActiveCategory(skill.group)}

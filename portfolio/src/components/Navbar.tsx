@@ -15,6 +15,7 @@ export const routes = [
   { name: "Achievements", path: "/achievements" },
   { name: "Blog", path: "/blog" },
   { name: "Profiles", path: "/profiles" },
+  { name: "Contact", path: "/contact" },
 ];
 
 export function Navbar({ dark, setDark }: { dark: boolean; setDark: (fn: (v: boolean) => boolean) => void }) {
