@@ -1,16 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Mail,
   Phone,
   MapPin,
   Send,
   CheckCircle2,
-  AlertCircle,
   Code2,
   BriefcaseBusiness,
-  Loader2,
   Copy,
   Check,
   Sparkles,
@@ -21,10 +19,22 @@ import { SectionHeading } from "@/src/components/SectionHeading";
 
 export function ContactClient() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   const [copied, setCopied] = useState(false);
+  const [copiedMessage, setCopiedMessage] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [nextUrl, setNextUrl] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.set("submitted", "true");
+      setNextUrl(currentUrl.toString());
+
+      if (window.location.search.includes("submitted=true")) {
+        setSubmitted(true);
+      }
+    }
+  }, []);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(portfolioData.email);
@@ -32,75 +42,18 @@ export function ContactClient() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage("");
-    setSuccessMessage("");
-
-    const nameClean = formData.name.trim();
-    const emailClean = formData.email.trim();
-    const messageClean = formData.message.trim();
-
-    // Client-side Validation
-    if (!nameClean) {
-      setStatus("error");
-      setErrorMessage("Please enter your name.");
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailClean || !emailRegex.test(emailClean)) {
-      setStatus("error");
-      setErrorMessage("Please enter a valid email address.");
-      return;
-    }
-
-    if (!messageClean) {
-      setStatus("error");
-      setErrorMessage("Please enter your message.");
-      return;
-    }
-
-    setStatus("loading");
-
-    try {
-      // Direct client-side FormSubmit AJAX submission (No server API route or API key required)
-      const response = await fetch(`https://formsubmit.co/ajax/${portfolioData.email}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          name: nameClean,
-          email: emailClean,
-          message: messageClean,
-          _subject: `Portfolio Contact — ${nameClean}`,
-          _replyto: emailClean,
-          _template: "table",
-          _captcha: "false",
-        }),
-      });
-
-      const data = await response.json();
-
-      // Verify explicit FormSubmit success response
-      if (response.ok && (data.success === "true" || data.success === true)) {
-        setStatus("success");
-        setSuccessMessage("Message sent successfully! Thank you for reaching out. Sujan will get back to you soon.");
-        setFormData({ name: "", email: "", message: "" });
-      } else {
-        setStatus("error");
-        setErrorMessage(
-          data.message || "Failed to deliver message via FormSubmit. Please try emailing directly at sujankswork@gmail.com"
-        );
-      }
-    } catch (err) {
-      console.error("FormSubmit Submission Error:", err);
-      setStatus("error");
-      setErrorMessage("Network error occurred. Please check your connection or email directly at sujankswork@gmail.com");
-    }
+  const handleCopyMessageText = () => {
+    const textToCopy = `To: ${portfolioData.email}\nSubject: Portfolio Contact — ${formData.name || "Inquiry"}\nFrom: ${formData.name || "Visitor"} (${formData.email || "No email"})\n\nMessage:\n${formData.message}`;
+    navigator.clipboard.writeText(textToCopy);
+    setCopiedMessage(true);
+    setTimeout(() => setCopiedMessage(false), 2500);
   };
+
+  const mailtoUrl = `mailto:${portfolioData.email}?subject=${encodeURIComponent(
+    `Portfolio Contact — ${formData.name || "New Message"}`
+  )}&body=${encodeURIComponent(
+    `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+  )}`;
 
   return (
     <div className="min-h-screen px-4 py-12 sm:px-6 lg:px-8">
@@ -238,7 +191,7 @@ export function ContactClient() {
             </div>
           </motion.div>
 
-          {/* Right Column: Direct FormSubmit Form (7 Cols) */}
+          {/* Right Column: Native Direct FormSubmit Form (7 Cols) */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -254,9 +207,9 @@ export function ContactClient() {
                 <span className="font-mono text-[11px] text-slate-400">Response within 24h</span>
               </div>
 
-              {/* Status Alerts */}
+              {/* Status Alert for verified FormSubmit return redirect */}
               <AnimatePresence mode="wait">
-                {status === "success" && (
+                {submitted && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -264,26 +217,25 @@ export function ContactClient() {
                     className="flex items-start gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-emerald-300 font-mono text-xs leading-relaxed"
                   >
                     <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-emerald-400" />
-                    <span>{successMessage}</span>
-                  </motion.div>
-                )}
-
-                {status === "error" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="flex items-start gap-3 rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-rose-300 font-mono text-xs leading-relaxed"
-                  >
-                    <AlertCircle size={18} className="mt-0.5 shrink-0 text-rose-400" />
-                    <span>{errorMessage}</span>
+                    <span>Message sent successfully! Thank you for reaching out. Sujan will get back to you soon.</span>
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              {/* Direct FormSubmit Form */}
-              <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Name */}
+              {/* Native HTML FormSubmit Form */}
+              <form
+                action={`https://formsubmit.co/${portfolioData.email}`}
+                method="POST"
+                className="space-y-5"
+              >
+                {/* FormSubmit Hidden Configuration Parameters */}
+                <input type="hidden" name="_subject" value="Portfolio Contact — New Message" />
+                <input type="hidden" name="_template" value="table" />
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_replyto" value={formData.email} />
+                {nextUrl && <input type="hidden" name="_next" value={nextUrl} />}
+
+                {/* Name Field */}
                 <div className="space-y-2">
                   <label htmlFor="contact-name" className="block font-mono text-xs font-semibold uppercase tracking-wider text-slate-300">
                     Your Name <span className="text-cyan-400">*</span>
@@ -300,7 +252,7 @@ export function ContactClient() {
                   />
                 </div>
 
-                {/* Email */}
+                {/* Email Field */}
                 <div className="space-y-2">
                   <label htmlFor="contact-email" className="block font-mono text-xs font-semibold uppercase tracking-wider text-slate-300">
                     Your Email Address <span className="text-cyan-400">*</span>
@@ -317,7 +269,7 @@ export function ContactClient() {
                   />
                 </div>
 
-                {/* Message */}
+                {/* Message Field */}
                 <div className="space-y-2">
                   <label htmlFor="contact-message" className="block font-mono text-xs font-semibold uppercase tracking-wider text-slate-300">
                     Your Message <span className="text-cyan-400">*</span>
@@ -337,21 +289,30 @@ export function ContactClient() {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  disabled={status === "loading"}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-500 px-6 py-4 font-mono text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-400 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-500 px-6 py-4 font-mono text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-400 hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
                 >
-                  {status === "loading" ? (
-                    <>
-                      <Loader2 size={18} className="animate-spin text-slate-950" />
-                      <span>Sending Message...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Send size={18} />
-                      <span>Send Message</span>
-                    </>
-                  )}
+                  <Send size={18} />
+                  <span>Send Message</span>
                 </button>
+
+                {/* Quick Direct Actions: Open Email App to Send & Copy Email Body */}
+                <div className="pt-3 flex flex-wrap gap-2.5 border-t border-white/10">
+                  <a
+                    href={mailtoUrl}
+                    className="inline-flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-xs font-mono font-semibold text-slate-300 transition hover:bg-white/10 hover:text-cyan-300 hover:border-cyan-500/40"
+                  >
+                    <Mail size={15} />
+                    <span>Open Email App to Send</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={handleCopyMessageText}
+                    className="inline-flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-xs font-mono font-semibold text-slate-300 transition hover:bg-white/10 hover:text-cyan-300 hover:border-cyan-500/40 cursor-pointer"
+                  >
+                    {copiedMessage ? <Check size={15} className="text-emerald-400" /> : <Copy size={15} />}
+                    <span>{copiedMessage ? "Copied!" : "Copy Email Body"}</span>
+                  </button>
+                </div>
               </form>
             </div>
           </motion.div>
@@ -360,3 +321,4 @@ export function ContactClient() {
     </div>
   );
 }
+
