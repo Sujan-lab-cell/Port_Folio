@@ -1,37 +1,18 @@
-# Achievements & Recognition
+# Achievements, Competitions & Recognition
+
+## Hackathons & Technical Competitions
+- Rebus Rumble — Winner Award: Champion Winner Award in the "Rebus Rumble - Decode the Puzzle Quiz" during Quad Quest 2k25 International Level SDP Program at Srinivas University (March 3, 2025).
+- CodeFury 8.0 — National Level Hackathon: Participated in CodeFury 8.0, the 8th Annual National-Level Hackathon organized by IEEE UVCE Computer Society in collaboration with ARTPARK @ IISc (August 22–24, 2025).
+- Quiz-o-mania Tech Quiz: Participated in Quiz-o-mania technical quiz competition organized by ACCESS, Department of Computer & Communication Engineering at NMAMIT, Nitte (February 1, 2025).
 
 ## Awards & Honors
-1. **Rebus Rumble - Decode the Puzzle Quiz Winner Award**
-   - **Issuer**: NMAM Institute of Technology, Nitte / Srinivas University Quad Quest 2k25
-   - **Category**: Technical Quiz & Puzzle Solving
-   - **Date**: March / June 2025
-   - **Achievement**: First Place (Winner) in the Rebus Rumble technical puzzle solving competition.
+- Scouts Rajya Puraskar Award (State Governor Award): Recognized with the prestigious Rajya Puraskar (Governor's Award) in Bharat Scouts & Guides (2022) for leadership, public service, outdoor survival, and discipline.
+- Incridea Techno-Cultural Fest Competitions (NMAMIT Nitte):
+  - Sherlock-ed — Incridea '26 (March 5–8, 2026)
+  - Roadies — Incridea '25 (February 27 – March 1, 2025)
+  - Lazzarena — Incridea '24 (February 22–24, 2024)
+  - Tulu Tulipu — Incridea '24 (February 22–24, 2024)
+- Scouts International Jamboree & Jamborette: Participated in regional and state-level Scouts Jamboree & Jamborette camps (2022).
 
-2. **Rajya Puraskar Scout Award**
-   - **Issuer**: Governor of Karnataka / The Bharat Scouts and Guides
-   - **Category**: State Level Honor / Leadership
-   - **Date**: 2020 – 2022
-   - **Achievement**: Highest state-level Scout Honor awarded by the Governor of Karnataka for leadership, community service, and outdoor survival skills.
-
-3. **Runners Up in Football - AI Cup**
-   - **Issuer**: NMAM Institute of Technology, Nitte
-   - **Date**: 2024
-   - **Achievement**: Secured Runners-up position in Football during the AI Cup tournament at NMAMIT.
-
-## Competitions & Hackathons
-4. **CodeFury 8.0 National Level Hackathon**
-   - **Issuer**: IEEE Student Branch & ARTPARK I-Hub @ IISc
-   - **Date**: August 22-24, 2025
-   - **Achievement**: Participation in 8th Annual National-Level Hackathon powered by ARTPARK @ IISc.
-
-5. **Quiz-o-mania Tech Quiz**
-   - **Issuer**: ACCESS, Dept of CCE, NMAMIT
-   - **Date**: February 1, 2025
-   - **Achievement**: Participated in Quiz-o-mania technical quiz competition.
-
-## Leadership, Fest & Community Activities
-6. **Sherlock-ed - Incridea '26** — March 5-8, 2026
-7. **Roadies - Incridea '25** — Feb 27 - March 1, 2025
-8. **Lazzarena - Incridea '24** — Feb 22-24, 2024
-9. **Tulu Tulipu - Incridea '24** — Feb 22-24, 2024
-10. **Scouts International Jamboree & Jamborette** — Regional and state-level leadership camps.
+## Sports Achievements
+- AI Cup Football — Runners Up: Secured the Runners-up trophy in Football at the AI Cup tournament held at NMAMIT Nitte (2024).

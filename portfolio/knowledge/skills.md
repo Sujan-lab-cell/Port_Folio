@@ -1,34 +1,51 @@
 # Technical Skills & Expertise
 
-## 1. Programming Languages
-- Python, C++, C, Java, SQL
+## Summary
+Sujan K S possesses a broad technical skillset spanning Artificial Intelligence, Machine Learning, Computer Vision, Natural Language Processing, Generative Models, Robotics (ROS2), Software Engineering, and Database Management.
 
-## 2. AI / Machine Learning
-- Machine Learning, Deep Learning, Generative AI, Generative Adversarial Networks (GANs), WGAN (Wasserstein GAN), NLP, Transformers, LLMs, RAG, Reinforcement Learning
+## Programming Languages
+- Python: Core language for AI/ML development, data science, deep learning models, backend APIs, and automation.
+- C++: Used for performance-critical algorithms, competitive programming, and ROS2 node development.
+- C: Low-level programming and system fundamentals.
+- Java: Object-oriented development, Swing/AWT GUI applications, and database connectivity (JDBC).
+- SQL: Querying, relational schema design, indexing, and data manipulation across MySQL, PostgreSQL, pgvector, and SQLite.
 
-## 3. Computer Vision
-- Computer Vision, Object Detection, Image Classification, Image Segmentation, Image Processing, CNNs, Transfer Learning, Model Optimization, YOLO, OpenCV
+## AI & Machine Learning
+- Machine Learning: Supervised learning, unsupervised learning, classification, regression, feature engineering, model evaluation, tree ensembles.
+- Deep Learning: Neural networks, CNNs, Transformers, sequence models, PyTorch, TensorFlow, Keras.
+- Generative AI & GANs: Generative Adversarial Networks (GANs), Wasserstein GAN with Gradient Penalty (WGAN-GP), synthetic data generation.
+- Natural Language Processing (NLP): Sequence-to-sequence transformers (T5), text classification, Hugging Face ecosystem, RAG (Retrieval-Augmented Generation), LLMs, anomaly detection.
+- Reinforcement Learning: Fundamentals of agent-environment interaction, Q-learning, policy search.
 
-## 4. Speech / Multimodal AI
-- Speech Processing, Text-to-Speech, Multilingual AI
+## Computer Vision
+- Core Vision Capabilities: Object detection, image classification, instance segmentation, image processing, video tracking.
+- Models & Toolkits: YOLOv8 (Detection & Segmentation), OpenCV, CNN architectures, transfer learning, model quantization & optimization.
 
-## 5. Data Science
-- NumPy, Pandas, Matplotlib, Seaborn, Scikit-learn, Power BI
+## Speech & Multimodal AI
+- Audio & Speech Processing: Speech-to-Text (STT), Text-to-Speech (TTS), multimodal pipeline integration, multilingual text-speech workflows.
 
-## 6. Frameworks / Libraries
-- TensorFlow, Keras, PyTorch, Transformers, OpenCV, YOLOv8
+## Data Science & Analytics
+- Data Manipulation & Visualization: NumPy, Pandas, Matplotlib, Seaborn, Scikit-learn, DuckDB.
+- Business Intelligence: Power BI, Power Query, DAX, KPI modeling, analytics storytelling.
 
-## 7. Backend / APIs / Deployment
-- FastAPI, REST APIs, Docker, Cloud Deployment, Render
+## Frameworks & Libraries
+- Deep Learning: PyTorch, TensorFlow, Keras, Hugging Face Transformers, Ultralytics YOLOv8.
+- Computer Vision & Graphics: OpenCV, Roboflow.
+- Web & App Interfaces: Streamlit, FastAPI, Pydantic.
 
-## 8. Databases
-- MongoDB, Supabase, pgvector, MySQL, SQLite
+## Backend, APIs & Deployment
+- API Development: RESTful APIs, FastAPI microservices.
+- Containerization & Hosting: Docker, Render cloud deployment.
 
-## 9. Robotics & Automation
-- ROS2, Robotics, Automation, IMU, LDR, IoT
+## Databases & Data Storage
+- Databases: MongoDB, Supabase, pgvector (vector search), MySQL, SQLite.
 
-## 10. Tools & Platforms
-- Git, GitHub, VS Code, Jupyter Notebook, Google Colab, Kaggle, Roboflow, Streamlit, Power BI
+## Robotics & Automation
+- Robotics Frameworks: ROS 2 (Robot Operating System 2), node publisher/subscriber patterns, ROS topics.
+- Hardware & Sensing: Sensor integration (IMU, LDR, Ultrasonic), IoT, automation control loops.
 
-## 11. Computer Science Foundations
-- Data Structures & Algorithms, OOP, DBMS, Operating Systems, Computer Networks
+## Development Tools & Platforms
+- Developer Environment: Git, GitHub, VS Code, Jupyter Notebook, Google Colab, Kaggle, Roboflow, Streamlit, Power BI.
+
+## Computer Science Foundations
+- Core CS Principles: Data Structures & Algorithms (DSA), Object-Oriented Programming (OOP), Database Management Systems (DBMS), Operating Systems (OS), Computer Networks.
