@@ -26,10 +26,9 @@ Building intelligent systems using AI, Computer Vision, Deep Learning, and NLP �
 - Featured Repositories: 10+
 
 ## Education Overview
-- Degree: Bachelor of Technology (B.Tech) in Artificial Intelligence and Machine Learning
-- Institution: N.M.A.M. Institute of Technology (NMAMIT), Nitte, Karnataka
-- Duration: 2023 – 2027
-- Cumulative CGPA: 8.56
+- **Bachelor of Technology (B.Tech)**: Artificial Intelligence and Machine Learning | N.M.A.M. Institute of Technology (NMAMIT), Nitte (2023 – 2027) | CGPA: 8.56
+- **Pre-University (PU - PCMB)**: Vivekananda Pre-University College (2021 – 2023) | Percentage: 87%
+- **Secondary School (10th)**: Vittal Jaycees English Medium School (Completed 2020) | Percentage: 86%
 
 ## Current Technical Focus
 - Deep Learning & Neural Network Architectures

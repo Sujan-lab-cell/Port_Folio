@@ -9,6 +9,27 @@
 - Cumulative CGPA: 8.56
 - Student Name: Sujan K S
 
+## Bachelor of Technology (B.Tech)
+
+- Degree: Bachelor of Technology (B.Tech) in Artificial Intelligence and Machine Learning
+- Institution: N.M.A.M. Institute of Technology (NMAMIT), Nitte, Karnataka
+- Duration: 2023 – 2027
+- Cumulative CGPA: 8.56 / 10.0
+
+## Pre-University (PU)
+
+- Program: Pre-University (PU), PCMB
+- Institution: Vivekananda Pre-University College
+- Duration: 2021 – 2023
+- Grade: 87%
+
+## Secondary School (10th)
+
+- Program: Secondary School (10th)
+- Institution: Vittal Jaycees English Medium School
+- Year of Completion: 2020
+- Grade: 86%
+
 ### Academic Highlights & Focus
 - Specialization in core AI/ML disciplines including Deep Learning, Computer Vision, Natural Language Processing, Generative AI, and Reinforcement Learning.
 - Hands-on practical project work integrated into the academic curriculum, culminating in a final-year research-oriented project in medical computer vision.

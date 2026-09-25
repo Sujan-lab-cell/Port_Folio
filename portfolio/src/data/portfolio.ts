@@ -403,7 +403,7 @@ export const portfolioData = {
     {
       company: "ISIRI Technologies Pvt. Ltd. (AyusLab)",
       role: "AI/ML Intern",
-      date: "May 2026 – Jul 2026",
+      date: "June 15, 2026 – August 10, 2026",
       location: "Mangaluru, Karnataka",
       github: "https://github.com/Sujan-lab-cell/INVOICE_TO_JSON_AI_PARSER.git",
       points: [
@@ -1144,7 +1144,7 @@ class PerceptionNode(Node):
   ],
   profiles: [
     { name: "GitHub", value: "Pinned AI repositories, recent commits, and contributions", href: "https://github.com/Sujan-lab-cell" },
-    { name: "LeetCode", value: "DSA practice, problem solving, and contest growth", href: "#" },
+    { name: "LeetCode", value: "DSA practice, problem solving, and contest growth", href: "https://leetcode.com/u/Sujan_lab_cell/" },
     { name: "Kaggle", value: "Datasets, notebooks, and ML experimentation", href: "https://kaggle.com" },
     { name: "LinkedIn", value: "Professional updates and recruiter contact", href: "https://www.linkedin.com/in/sujan-k-s-a41261321/" },
   ],

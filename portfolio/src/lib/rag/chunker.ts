@@ -99,17 +99,21 @@ export function parseMarkdownToChunks(
 
   // Build final RAG chunks with metadata and contextual headers
   const totalChunks = processedBlocks.length;
+  const isJapanese = sourceFilename.startsWith("ja/") || sourceFilename.startsWith("jp/");
+  const language: "en" | "ja" = isJapanese ? "ja" : "en";
+
   const chunks: RAGChunk[] = processedBlocks.map((block, index) => {
     const chunkId = `${sourceFilename.replace(/[^a-zA-Z0-9]/g, "_")}_chunk_${index}`;
     
     // Rich contextual text for RAG retrieval
     const formattedContent = [
-      `[Document: ${rootHeading} | Source: ${sourceFilename} | Section: ${block.section}]`,
+      `[Document: ${rootHeading} | Source: ${sourceFilename} | Language: ${language} | Section: ${block.section}]`,
       block.text,
     ].join("\n\n");
 
     const metadata: RAGChunkMetadata = {
       source: sourceFilename,
+      language,
       document_type: documentType,
       section: block.section,
       heading: rootHeading,

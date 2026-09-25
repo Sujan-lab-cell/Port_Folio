@@ -19,7 +19,8 @@
 
 ### LeetCode
 - Name: LeetCode
-- Details: Data Structures & Algorithms (DSA) practice, problem solving, and algorithmic growth. (Profile URL listed as pending / link not set in portfolio).
+- URL: https://leetcode.com/u/Sujan_lab_cell/
+- Details: Data Structures & Algorithms (DSA) practice, problem solving, and algorithmic growth.
 
 ## Direct Contact Information
 - Name: Sujan K S

@@ -117,16 +117,14 @@ Multiple model families were evaluated under the same controlled modeling method
 - Rule-based Baseline
 
 #### Controlled Benchmark Results Table
-| Model | P@10 | P@20 | P@50 | P@100 |
-|---|---|---|---|---|
-| Baseline | 0.400 | 0.370 | 0.392 | 0.388 |
-| Logistic Regression | 0.380 | 0.400 | 0.424 | 0.438 |
-| Decision Tree | 0.400 | 0.390 | 0.324 | 0.346 |
-| HistGradientBoosting | 0.440 | 0.420 | 0.436 | 0.442 |
-| LightGBM | 0.450 | 0.425 | 0.438 | 0.444 |
-| CatBoost | 0.450 | 0.430 | 0.440 | 0.445 |
-| XGBoost | 0.450 | 0.430 | 0.442 | 0.446 |
-| **Random Forest** | **0.460** | **0.430** | **0.444** | **0.448** |
+- Baseline: P@10 = 0.400, P@20 = 0.370, P@50 = 0.392, P@100 = 0.388
+- Logistic Regression: P@10 = 0.380, P@20 = 0.400, P@50 = 0.424, P@100 = 0.438
+- Decision Tree: P@10 = 0.400, P@20 = 0.390, P@50 = 0.324, P@100 = 0.346
+- HistGradientBoosting: P@10 = 0.440, P@20 = 0.420, P@50 = 0.436, P@100 = 0.442
+- LightGBM: P@10 = 0.450, P@20 = 0.425, P@50 = 0.438, P@100 = 0.444
+- CatBoost: P@10 = 0.450, P@20 = 0.430, P@50 = 0.440, P@100 = 0.445
+- XGBoost: P@10 = 0.450, P@20 = 0.430, P@50 = 0.442, P@100 = 0.446
+- Random Forest: P@10 = 0.460, P@20 = 0.430, P@50 = 0.444, P@100 = 0.448
 
 ### 1.12 Final Random Forest Model & Performance
 - **Selected Model**: Random Forest Classifier
@@ -141,17 +139,15 @@ Multiple model families were evaluated under the same controlled modeling method
 - **Relative Improvement**: ~ +13.26% (improved Precision@50 benchmark from 39.2% to 44.4%)
 
 ### 1.13 Feature Importance (Random Forest Gini Importances)
-| Rank | Feature | Importance |
-|---|---|---|
-| 1 | `momentum` | 0.2899 |
-| 2 | `april_impressions` | 0.2203 |
-| 3 | `impressions_total` | 0.1921 |
-| 4 | `ctr` | 0.0634 |
-| 5 | `feb_clicks` | 0.0633 |
-| 6 | `weighted_position` | 0.0590 |
-| 7 | `clicks_total` | 0.0540 |
-| 8 | `april_clicks` | 0.0512 |
-| 9 | `active_days` | 0.0067 |
+- Rank 1: `momentum` (Importance: 0.2899)
+- Rank 2: `april_impressions` (Importance: 0.2203)
+- Rank 3: `impressions_total` (Importance: 0.1921)
+- Rank 4: `ctr` (Importance: 0.0634)
+- Rank 5: `feb_clicks` (Importance: 0.0633)
+- Rank 6: `weighted_position` (Importance: 0.0590)
+- Rank 7: `clicks_total` (Importance: 0.0540)
+- Rank 8: `april_clicks` (Importance: 0.0512)
+- Rank 9: `active_days` (Importance: 0.0067)
 
 The three largest feature importances were historical momentum (0.2899), April impressions (0.2203), and total historical impressions (0.1921). These represent model feature importances, not causal explanations.
 
@@ -165,17 +161,15 @@ The three largest feature importances were historical momentum (0.2899), April i
   3. `content_hash_id` (ascending)
 
 #### Random Forest Fold Results (Precision@50)
-| Fold | P@50 |
-|---|---|
-| Fold 0 | 0.44 |
-| Fold 1 | 0.32 |
-| Fold 2 | 0.46 |
-| Fold 3 | 0.64 |
-| Fold 4 | 0.36 |
-| **Mean** | **0.444** |
+- Fold 0: Precision@50 = 0.44
+- Fold 1: Precision@50 = 0.32
+- Fold 2: Precision@50 = 0.46
+- Fold 3: Precision@50 = 0.64
+- Fold 4: Precision@50 = 0.36
+- Mean: Precision@50 = 0.444
 
 ### 1.15 Human-in-the-Loop Workflow & Action Playbook
-- **Workflow Pipeline**: Historical search data → Feature engineering → ML model → Risk / ranking score → Prioritized webpage queue → Human review → Content investigation / action.
+- **Workflow Pipeline**: Historical search data passes into feature engineering, which feeds the ML model to generate a risk ranking score, creating a prioritized webpage queue for human review and content investigation or action.
 - **Core Principle**: *"The model recommends WHERE TO LOOK; the human decides WHAT TO DO."*
 - **Content Action Playbook**: Produced a ranked queue of webpages needing human attention. Emphasized reviewing pages before executing content changes and monitoring outcomes prior to adjusting model configuration.
 
