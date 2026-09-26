@@ -16,6 +16,73 @@ interface ChatMessage {
   isLoading?: boolean;
 }
 
+function FormattedMarkdown({ content }: { content: string | null }) {
+  if (!content) return null;
+
+  const renderInline = (text: string) => {
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**') && part.length >= 4) {
+        return (
+          <strong key={i} className="font-semibold text-cyan-200">
+            {part.slice(2, -2)}
+          </strong>
+        );
+      }
+      return part;
+    });
+  };
+
+  const lines = content.split('\n');
+
+  return (
+    <div className="space-y-1 text-slate-200 leading-relaxed font-sans text-[11px]">
+      {lines.map((line, idx) => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          return <div key={idx} className="h-1" />;
+        }
+
+        if (trimmed.startsWith('•') || trimmed.startsWith('-') || trimmed.startsWith('*')) {
+          const bulletText = trimmed.replace(/^[\bullet\-\*]\s*/, '');
+          return (
+            <div key={idx} className="flex items-start gap-1.5 pl-1 my-0.5">
+              <span className="text-cyan-400 font-bold shrink-0 mt-0.5">•</span>
+              <span className="flex-1 min-w-0">{renderInline(bulletText)}</span>
+            </div>
+          );
+        }
+
+        const numMatch = trimmed.match(/^(\d+)\.\s+(.*)$/);
+        if (numMatch) {
+          const [, num, itemText] = numMatch;
+          return (
+            <div key={idx} className="flex items-start gap-1.5 pl-1 my-0.5">
+              <span className="font-mono font-bold text-cyan-400 shrink-0 mt-0.5">{num}.</span>
+              <span className="flex-1 min-w-0">{renderInline(itemText)}</span>
+            </div>
+          );
+        }
+
+        if (trimmed.startsWith('#')) {
+          const headingText = trimmed.replace(/^#+\s*/, '');
+          return (
+            <div key={idx} className="font-mono font-bold text-cyan-300 text-[11px] mt-1 mb-0.5">
+              {renderInline(headingText)}
+            </div>
+          );
+        }
+
+        return (
+          <p key={idx} className="my-0.5">
+            {renderInline(line)}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
 export function AIRobotAssistant({ onAskQuestion }: AIRobotAssistantProps) {
   const [hovered, setHovered] = useState(false);
   const [activeTooltip, setActiveTooltip] = useState(true);
@@ -158,9 +225,24 @@ export function AIRobotAssistant({ onAskQuestion }: AIRobotAssistantProps) {
                 </div>
 
                 {messages.length === 0 ? (
-                  <p className="mt-1 text-xs text-slate-200 leading-snug">
-                    {greetingText}
-                  </p>
+                  <>
+                    <p className="mt-1 text-xs text-slate-200 leading-snug">
+                      {greetingText}
+                    </p>
+                    {/* Quick Prompts (Only shown in initial empty state) */}
+                    <div className="mt-3 flex flex-wrap gap-1.5 border-t border-white/10 pt-2">
+                      {quickPrompts.map((prompt) => (
+                        <button
+                          key={prompt}
+                          onClick={() => handleAskRobot(prompt)}
+                          disabled={isLoading}
+                          className="rounded-md border border-cyan-500/20 bg-cyan-950/40 px-2 py-1 text-[11px] font-medium text-cyan-200 transition hover:border-cyan-400 hover:bg-cyan-500/20 hover:text-white disabled:opacity-40 cursor-pointer"
+                        >
+                          {prompt}
+                        </button>
+                      ))}
+                    </div>
+                  </>
                 ) : (
                   <div
                     ref={scrollRef}
@@ -185,7 +267,7 @@ export function AIRobotAssistant({ onAskQuestion }: AIRobotAssistantProps) {
                             ) : item.error ? (
                               <span className="text-rose-400 font-mono">{item.error}</span>
                             ) : (
-                              <span className="whitespace-pre-wrap">{item.answer}</span>
+                              <FormattedMarkdown content={item.answer} />
                             )}
                           </div>
                         </div>
@@ -194,20 +276,6 @@ export function AIRobotAssistant({ onAskQuestion }: AIRobotAssistantProps) {
                   </div>
                 )}
               </div>
-            </div>
-
-            {/* Quick Prompts */}
-            <div className="mt-3 flex flex-wrap gap-1.5 border-t border-white/10 pt-2">
-              {quickPrompts.map((prompt) => (
-                <button
-                  key={prompt}
-                  onClick={() => handleAskRobot(prompt)}
-                  disabled={isLoading}
-                  className="rounded-md border border-cyan-500/20 bg-cyan-950/40 px-2 py-1 text-[11px] font-medium text-cyan-200 transition hover:border-cyan-400 hover:bg-cyan-500/20 hover:text-white disabled:opacity-40 cursor-pointer"
-                >
-                  {prompt}
-                </button>
-              ))}
             </div>
 
             {/* Custom Question Input */}

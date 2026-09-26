@@ -4,9 +4,11 @@ import { generateGroundedAnswer } from "../src/lib/rag/generator";
 
 const TEST_QUERIES = [
   "Tell me about Sujan",
-  "What projects has he built?",
-  "What is his final year project?",
+  "Tell me about his internship",
+  "How many internships did he do?",
   "What are his skills?",
+  "What projects has he built?",
+  "Show resume",
 ];
 
 async function runTest() {
