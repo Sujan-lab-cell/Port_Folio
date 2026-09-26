@@ -17,43 +17,42 @@ import {
   Bot,
   Workflow,
 } from "lucide-react";
-import { portfolioData } from "@/src/data/portfolio";
+import { useLanguage } from "@/src/i18n";
 
 interface IntroScreenProps {
   onEnter: () => void;
 }
 
-const ROLES = [
-  "AI / ML ENGINEER",
-  "COMPUTER VISION SPECIALIST",
-  "ROBOTIC OPERATING SYSTEMS 2 (ROS 2)",
-  "AUTOMATION & REINFORCEMENT LEARNING",
-  "MULTILINGUAL NLP DEVELOPER",
-  "DEEP LEARNING ARCHITECT",
-  "Generative Adversal Networks Developer",
-  "Large Language Model and RAG Developer"
-];
-
-const HIGHLIGHT_BADGES = [
-  { label: "ROS 2 Robotics", icon: Bot },
-  { label: "Automation System", icon: Workflow },
-  { label: "Reinforcement Learning", icon: BrainCircuit },
-  { label: "YOLOv8 Vision", icon: Cpu },
-  { label: "T5 Transformers", icon: Layers },
-  { label: "WGAN-GP Face Synthesis", icon: Sparkles },
-  { label: "PyTorch & MLOps", icon: Code2 },
-];
-
 export function IntroScreen({ onEnter }: IntroScreenProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { lang, setLang, ui, portfolioData } = useLanguage();
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
+  const ROLES = ui.introScreen.roles;
+
+  const HIGHLIGHT_BADGES = [
+    { label: ui.introScreen.highlightBadges.ros2, icon: Bot },
+    { label: ui.introScreen.highlightBadges.automation, icon: Workflow },
+    { label: ui.introScreen.highlightBadges.rl, icon: BrainCircuit },
+    { label: ui.introScreen.highlightBadges.yolo, icon: Cpu },
+    { label: ui.introScreen.highlightBadges.t5, icon: Layers },
+    { label: ui.introScreen.highlightBadges.wgan, icon: Sparkles },
+    { label: ui.introScreen.highlightBadges.pytorch, icon: Code2 },
+  ];
+
+  // Reset typewriter index on language change to prevent out of bounds
+  useEffect(() => {
+    setRoleIndex(0);
+    setDisplayText("");
+    setIsDeleting(false);
+  }, [lang]);
+
   // Typewriter effect for agency-style rotating roles
   useEffect(() => {
-    const currentRole = ROLES[roleIndex];
+    const currentRole = ROLES[roleIndex] || ROLES[0];
     const typingSpeed = isDeleting ? 30 : 70;
 
     const timer = setTimeout(() => {
@@ -72,7 +71,7 @@ export function IntroScreen({ onEnter }: IntroScreenProps) {
     }, typingSpeed);
 
     return () => clearTimeout(timer);
-  }, [displayText, isDeleting, roleIndex]);
+  }, [displayText, isDeleting, roleIndex, ROLES]);
 
   // Keyboard shortcut (Press ENTER key to launch)
   useEffect(() => {
@@ -242,18 +241,42 @@ export function IntroScreen({ onEnter }: IntroScreenProps) {
           <span className="hidden sm:inline-block h-3 w-px bg-white/20" />
           <span className="hidden sm:flex items-center gap-2 text-xs font-mono text-slate-400">
             <Radio size={12} className="text-emerald-400 animate-pulse" />
-            LIVE EXPERIMENTAL LAB
+            {ui.introScreen.liveLab}
           </span>
         </div>
 
-        <div className="flex items-center gap-6 font-mono text-xs text-slate-400">
+        <div className="flex items-center gap-4 sm:gap-6 font-mono text-xs text-slate-400">
           <div className="hidden md:flex items-center gap-2">
             <Globe size={13} className="text-cyan-400" />
             <span>MANGALORE 12.91° N</span>
           </div>
           <div className="flex items-center gap-2 rounded-full border border-white/10 px-3 py-1 bg-white/5">
             <Zap size={13} className="text-amber-300" />
-            <span>LATENCY: &lt; 4ms</span>
+            <span>{ui.introScreen.latency}</span>
+          </div>
+
+          {/* Language Toggle */}
+          <div className="flex items-center gap-1 rounded-full border border-cyan-500/30 bg-slate-900/60 p-1">
+            <button
+              onClick={() => setLang("en")}
+              className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold transition-all cursor-pointer ${
+                lang === "en"
+                  ? "bg-cyan-500 text-slate-950 shadow-[0_0_10px_rgba(34,211,238,0.5)]"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLang("ja")}
+              className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold transition-all cursor-pointer ${
+                lang === "ja"
+                  ? "bg-cyan-500 text-slate-950 shadow-[0_0_10px_rgba(34,211,238,0.5)]"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              JA
+            </button>
           </div>
         </div>
       </header>
@@ -268,7 +291,7 @@ export function IntroScreen({ onEnter }: IntroScreenProps) {
           className="mb-8 inline-flex items-center gap-3 rounded-full border border-cyan-500/40 bg-cyan-950/40 px-5 py-2 text-xs font-mono tracking-widest text-cyan-300 backdrop-blur-xl shadow-[0_0_25px_rgba(34,211,238,0.2)]"
         >
           <BrainCircuit size={16} className="text-cyan-400 animate-pulse" />
-          <span className="uppercase">AI / ML RESEARCH & PRODUCT PORTFOLIO</span>
+          <span className="uppercase">{ui.introScreen.badge}</span>
         </motion.div>
 
         {/* Oversized Agency Typography */}
@@ -336,23 +359,26 @@ export function IntroScreen({ onEnter }: IntroScreenProps) {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className="group relative inline-flex items-center gap-4 overflow-hidden rounded-2xl bg-gradient-to-r from-cyan-500 via-teal-300 to-indigo-500 p-[2px] font-mono text-base font-bold tracking-widest uppercase text-white shadow-[0_0_50px_rgba(34,211,238,0.45)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_80px_rgba(34,211,238,0.75)] active:scale-95 cursor-pointer"
-            aria-label="Enter Portfolio"
+            aria-label={ui.introScreen.enterPortfolio}
           >
             <span className="relative flex items-center gap-4 rounded-[14px] bg-slate-950 px-10 py-5 transition-all duration-300 group-hover:bg-opacity-80">
               <Sparkles size={20} className="text-cyan-400 group-hover:rotate-45 transition-transform duration-300" />
               <span className="text-lg font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-white to-cyan-100">
-                ENTER PORTFOLIO
+                {ui.introScreen.enterPortfolio}
               </span>
               <ArrowRight
                 size={22}
-                className={`text-cyan-300 transition-transform duration-300 ${isHovered ? "translate-x-2 scale-125 text-white" : ""
-                  }`}
+                className={`text-cyan-300 transition-transform duration-300 ${
+                  isHovered ? "translate-x-2 scale-125 text-white" : ""
+                }`}
               />
             </span>
           </button>
 
           <p className="text-xs font-mono text-slate-400 tracking-wider">
-            Press <kbd className="rounded border border-white/20 bg-white/10 px-2 py-0.5 text-cyan-300 font-bold">ENTER ↵</kbd> to launch
+            {lang === "en" ? "Press " : ""}
+            <kbd className="rounded border border-white/20 bg-white/10 px-2 py-0.5 text-cyan-300 font-bold">ENTER ↵</kbd>
+            {lang === "en" ? " to launch" : " キーを押して起動"}
           </p>
         </motion.div>
       </main>
@@ -362,14 +388,14 @@ export function IntroScreen({ onEnter }: IntroScreenProps) {
         <div className="flex items-center gap-6">
           <span>SUJAN K S © {new Date().getFullYear()}</span>
           <span className="hidden sm:inline-block">•</span>
-          <span className="hidden sm:inline-block">AI/ML ENGINEER PORTFOLIO</span>
+          <span className="hidden sm:inline-block">{ui.introScreen.portfolioSub}</span>
         </div>
 
         <button
           onClick={onEnter}
           className="text-cyan-400 hover:text-cyan-300 hover:underline transition cursor-pointer font-bold"
         >
-          SKIP INTRO &rarr;
+          {ui.introScreen.skipIntro}
         </button>
       </footer>
     </motion.div>

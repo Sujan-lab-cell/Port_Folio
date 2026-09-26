@@ -24,12 +24,14 @@ import {
   ShieldAlert,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { portfolioData, Project } from "@/src/data/portfolio";
+import { Project } from "@/src/data/portfolio";
 import { SectionHeading } from "@/src/components/SectionHeading";
+import { useLanguage } from "@/src/i18n";
 
 export function ProjectsClient() {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const { ui, portfolioData } = useLanguage();
 
   const categories = [
     "All",
@@ -62,7 +64,7 @@ export function ProjectsClient() {
 
       return matchesCategory && matchesSearch;
     });
-  }, [query, activeCategory]);
+  }, [query, activeCategory, portfolioData]);
 
   const isFilteringActive = query.trim().length > 0 || activeCategory !== "All";
 
@@ -83,9 +85,9 @@ export function ProjectsClient() {
       <div className="mx-auto max-w-7xl space-y-12">
         {/* Top Header */}
         <SectionHeading
-          eyebrow="PROJECTS"
-          title="AI systems built, tested, and deployed."
-          text="Case study gallery showcasing practical machine learning architectures, industry search ranking models, computer vision pipelines, NLP transformers, medical AI research, and software engineering systems."
+          eyebrow={ui.projectsPage.eyebrow}
+          title={ui.projectsPage.title}
+          text={ui.projectsPage.subtitle}
         />
 
         {/* Integrated Search Bar & Category Filters */}
@@ -98,13 +100,13 @@ export function ProjectsClient() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search case studies by title, tech, category, or architecture..."
+                placeholder={ui.projectsPage.searchPlaceholder}
                 className="w-full rounded-xl border border-slate-900/10 bg-white/80 py-3 pl-11 pr-10 text-sm font-mono text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 dark:border-white/10 dark:bg-white/[0.05] dark:text-white dark:placeholder-slate-500"
               />
               {query && (
                 <button
                   onClick={() => setQuery("")}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 cursor-pointer"
                 >
                   <X size={16} />
                 </button>
@@ -114,7 +116,7 @@ export function ProjectsClient() {
             {/* Results count pill */}
             <div className="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400 shrink-0">
               <Sparkles size={14} className="text-cyan-500" />
-              <span>Showing {filteredProjects.length} Project {filteredProjects.length === 1 ? "Case Study" : "Case Studies"}</span>
+              <span>Showing {filteredProjects.length} Projects</span>
             </div>
           </div>
 
@@ -129,7 +131,7 @@ export function ProjectsClient() {
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`rounded-lg px-3.5 py-1.5 text-xs font-mono font-medium transition-all duration-200 ${
+                  className={`rounded-lg px-3.5 py-1.5 text-xs font-mono font-medium transition-all duration-200 cursor-pointer ${
                     isActive
                       ? "bg-cyan-500 text-slate-950 font-semibold shadow-md shadow-cyan-500/20"
                       : "border border-slate-900/10 bg-slate-900/5 text-slate-700 hover:border-cyan-500/40 hover:text-cyan-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:border-cyan-500/40 dark:hover:text-cyan-300"
@@ -194,18 +196,15 @@ export function ProjectsClient() {
                 className="rounded-2xl border border-slate-900/10 bg-white/70 p-12 text-center backdrop-blur dark:border-white/10 dark:bg-slate-950/60"
               >
                 <Layers className="mx-auto text-slate-400" size={40} />
-                <h3 className="mt-4 text-lg font-bold text-slate-900 dark:text-white">No matching case studies found</h3>
-                <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-                  Try adjusting your search criteria or clear the filters.
-                </p>
+                <h3 className="mt-4 text-lg font-bold text-slate-900 dark:text-white">{ui.projectsPage.noProjectsFound}</h3>
                 <button
                   onClick={() => {
                     setQuery("");
                     setActiveCategory("All");
                   }}
-                  className="mt-6 rounded-xl bg-cyan-500 px-5 py-2.5 text-xs font-mono font-bold text-slate-950 shadow-lg shadow-cyan-500/20 hover:bg-cyan-400 transition"
+                  className="mt-4 rounded-lg bg-cyan-500 px-4 py-2 text-xs font-semibold text-slate-950 cursor-pointer"
                 >
-                  Clear All Filters
+                  {ui.buttons.clearFilters}
                 </button>
               </motion.div>
             )}

@@ -182,20 +182,93 @@ export function computeHybridReranking(
   };
 }
 
+export interface RetrievalMetrics {
+  embedding: {
+    startTime: string;
+    endTime: string;
+    durationMs: number;
+    processState: string;
+    subTelemetry?: any;
+  };
+  supabase: {
+    startTime: string;
+    endTime: string;
+    durationMs: number;
+    rawCandidateCount: number;
+  };
+  reranking: {
+    startTime: string;
+    endTime: string;
+    durationMs: number;
+  };
+}
+
 export async function performHybridRetrieval(
   queryText: string,
   candidateCount = 30,
   topK = 5
-): Promise<RerankedResult[]> {
+): Promise<{ topChunks: RerankedResult[]; metrics: RetrievalMetrics }> {
   const supabase = getSupabaseClient();
-  const pythonScript = path.join(process.cwd(), 'scripts', 'embed_query.py');
 
-  const rawOutput = execSync(`python "${pythonScript}" "${JSON.stringify([queryText]).replace(/"/g, '\\"')}"`, { encoding: 'utf-8' });
-  const jsonStart = rawOutput.indexOf('{');
-  const jsonEnd = rawOutput.lastIndexOf('}');
-  const cleanJson = jsonStart !== -1 && jsonEnd !== -1 ? rawOutput.substring(jsonStart, jsonEnd + 1) : rawOutput;
-  const parsedEmbeddings = JSON.parse(cleanJson);
-  const queryVector = Array.isArray(parsedEmbeddings) ? parsedEmbeddings[0].embedding : parsedEmbeddings.embedding;
+  // Stage 2: Embedding Generation (Warm persistent microservice with CLI fallback)
+  const embStart = performance.now();
+  const embStartTimeISO = new Date().toISOString();
+
+  let queryVector: number[] = [];
+  let processState = 'Persistent FastAPI Microservice (BAAI/bge-m3 warm in-memory)';
+  let embedSubTelemetry: any = null;
+
+  const serviceUrl = process.env.EMBEDDING_SERVICE_URL || 'http://127.0.0.1:8000/embed';
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+    const serviceRes = await fetch(serviceUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: queryText }),
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+
+    if (serviceRes.ok) {
+      const serviceData = await serviceRes.json();
+      if (serviceData.embedding && Array.isArray(serviceData.embedding)) {
+        queryVector = serviceData.embedding;
+        embedSubTelemetry = {
+          service_url: serviceUrl,
+          inference_ms: serviceData.inference_ms,
+          model_name: "BAAI/bge-m3",
+          dimension: serviceData.dimension || 1024,
+          cached_in_memory: true,
+        };
+      }
+    }
+  } catch (err: any) {
+    // Graceful fallback if persistent service is not running or still loading
+  }
+
+  // Fallback to CLI script if persistent service is unavailable
+  if (!queryVector || queryVector.length === 0) {
+    processState = 'Cold start fallback: Python child_process spawned & SentenceTransformer BAAI/bge-m3 initialized per query';
+    const pythonScript = path.join(process.cwd(), 'scripts', 'embed_query.py');
+    const rawOutput = execSync(`python "${pythonScript}" "${JSON.stringify([queryText]).replace(/"/g, '\\"')}"`, { encoding: 'utf-8' });
+    const jsonStart = rawOutput.indexOf('{');
+    const jsonEnd = rawOutput.lastIndexOf('}');
+    const cleanJson = jsonStart !== -1 && jsonEnd !== -1 ? rawOutput.substring(jsonStart, jsonEnd + 1) : rawOutput;
+    const parsedEmbeddings = JSON.parse(cleanJson);
+    queryVector = Array.isArray(parsedEmbeddings) ? parsedEmbeddings[0].embedding : parsedEmbeddings.embedding;
+    embedSubTelemetry = Array.isArray(parsedEmbeddings) ? parsedEmbeddings[0]._telemetry : parsedEmbeddings._telemetry;
+  }
+
+  const embEnd = performance.now();
+  const embEndTimeISO = new Date().toISOString();
+  const embDurationMs = Math.round((embEnd - embStart) * 100) / 100;
+
+  // Stage 3: Supabase vector retrieval
+  const supaStart = performance.now();
+  const supaStartTimeISO = new Date().toISOString();
 
   let { data, error } = await supabase.rpc('match_knowledge', {
     query_embedding: queryVector,
@@ -213,13 +286,48 @@ export async function performHybridRetrieval(
     error = fallbackRes.error;
   }
 
+  const supaEnd = performance.now();
+  const supaEndTimeISO = new Date().toISOString();
+  const supaDurationMs = Math.round((supaEnd - supaStart) * 100) / 100;
+
   if (error) {
     throw new Error(`Supabase retrieval error: ${error.message}`);
   }
 
   const rawResults: MatchResult[] = data || [];
+
+  // Stage 4: Reranking
+  const rerankStart = performance.now();
+  const rerankStartTimeISO = new Date().toISOString();
+
   const reranked: RerankedResult[] = rawResults.map((item) => computeHybridReranking(item, queryText));
   reranked.sort((a, b) => b.finalScore - a.finalScore);
+  const topChunks = reranked.slice(0, topK);
 
-  return reranked.slice(0, topK);
+  const rerankEnd = performance.now();
+  const rerankEndTimeISO = new Date().toISOString();
+  const rerankDurationMs = Math.round((rerankEnd - rerankStart) * 100) / 100;
+
+  const metrics: RetrievalMetrics = {
+    embedding: {
+      startTime: embStartTimeISO,
+      endTime: embEndTimeISO,
+      durationMs: embDurationMs,
+      processState,
+      subTelemetry: embedSubTelemetry,
+    },
+    supabase: {
+      startTime: supaStartTimeISO,
+      endTime: supaEndTimeISO,
+      durationMs: supaDurationMs,
+      rawCandidateCount: rawResults.length,
+    },
+    reranking: {
+      startTime: rerankStartTimeISO,
+      endTime: rerankEndTimeISO,
+      durationMs: rerankDurationMs,
+    },
+  };
+
+  return { topChunks, metrics };
 }

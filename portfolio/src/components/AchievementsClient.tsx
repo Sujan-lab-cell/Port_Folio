@@ -22,7 +22,8 @@ import {
   Clock,
   CheckCircle2,
 } from "lucide-react";
-import { portfolioData } from "@/src/data/portfolio";
+import { SectionHeading } from "@/src/components/SectionHeading";
+import { useLanguage } from "@/src/i18n";
 
 const CATEGORY_TABS = [
   { key: "all", label: "All", icon: Sparkles },
@@ -37,6 +38,7 @@ const CATEGORY_TABS = [
 
 export function AchievementsClient() {
   const [activeTab, setActiveTab] = useState("all");
+  const { ui, portfolioData } = useLanguage();
   const [selectedCertificate, setSelectedCertificate] = useState<(typeof portfolioData.achievements)[number] | null>(null);
 
   // Close lightbox modal on ESC key
@@ -105,17 +107,11 @@ export function AchievementsClient() {
     <div className="px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         {/* Page Header */}
-        <div className="mx-auto mb-10 max-w-3xl text-center">
-          <p className="mb-3 text-xs font-mono font-semibold uppercase tracking-[0.28em] text-cyan-500 dark:text-cyan-300">
-            Archive & Credentials
-          </p>
-          <h1 className="text-4xl font-bold tracking-tight text-slate-950 dark:text-white md:text-5xl">
-            Achievements & Credentials
-          </h1>
-          <p className="mt-4 text-base leading-relaxed text-slate-600 dark:text-slate-300">
-            A comprehensive archive of verified certificates, competition awards, industry internships, project completion credentials, and leadership activities.
-          </p>
-        </div>
+        <SectionHeading
+          eyebrow={ui.achievementsPage.eyebrow}
+          title={ui.achievementsPage.title}
+          text={ui.achievementsPage.subtitle}
+        />
 
         {/* Filter Tabs / Chips */}
         <div className="mb-10 flex flex-wrap items-center justify-center gap-2">
@@ -126,6 +122,16 @@ export function AchievementsClient() {
                 ? portfolioData.achievements.length
                 : portfolioData.achievements.filter((item) => item.category === tab.key).length;
             const isActive = activeTab === tab.key;
+            const labelMap: Record<string, string> = {
+              all: ui.achievementsPage.filterAll,
+              awards: ui.achievementsPage.filterAwards,
+              competitions: ui.achievementsPage.filterCompetitions,
+              courses: ui.achievementsPage.filterCourses,
+              workshops: ui.achievementsPage.filterWorkshops,
+              professional: ui.achievementsPage.filterProfessional,
+              projects: ui.achievementsPage.filterProjects,
+              activities: ui.achievementsPage.filterActivities,
+            };
 
             return (
               <button
@@ -138,7 +144,7 @@ export function AchievementsClient() {
                 }`}
               >
                 <Icon size={15} />
-                <span>{tab.label}</span>
+                <span>{labelMap[tab.key] || tab.label}</span>
                 <span
                   className={`ml-1 rounded-full px-1.5 py-0.5 text-[10px] font-mono font-bold ${
                     isActive

@@ -1,5 +1,11 @@
 import { RerankedResult } from './retrieval';
 
+export interface ContextMetrics {
+  startTime: string;
+  endTime: string;
+  durationMs: number;
+}
+
 export interface AssembledContext {
   formattedContext: string;
   chunkCount: number;
@@ -9,12 +15,16 @@ export interface AssembledContext {
     section: string;
     language: string;
   }>;
+  metrics: ContextMetrics;
 }
 
 export function assembleContext(
   chunks: RerankedResult[],
   maxCharLength = 3500
 ): AssembledContext {
+  const ctxStart = performance.now();
+  const startTimeISO = new Date().toISOString();
+
   const seenContents = new Set<string>();
   const contextParts: string[] = [];
   const usedChunks: Array<{ source: string; section: string; language: string }> = [];
@@ -51,10 +61,18 @@ export function assembleContext(
 
   const formattedContext = contextParts.join('\n---\n\n');
 
+  const ctxEnd = performance.now();
+  const endTimeISO = new Date().toISOString();
+
   return {
     formattedContext,
     chunkCount: contextParts.length,
     totalCharacters: currentLength,
     usedChunks,
+    metrics: {
+      startTime: startTimeISO,
+      endTime: endTimeISO,
+      durationMs: Math.round((ctxEnd - ctxStart) * 100) / 100,
+    },
   };
 }

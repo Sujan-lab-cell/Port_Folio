@@ -3,25 +3,27 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Command, Menu, X, ArrowRight } from "lucide-react";
+import { Command, Menu, X, ArrowRight, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/src/i18n";
 
 export const routes = [
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
-  { name: "Skills", path: "/skills" },
-  { name: "Projects", path: "/projects" },
-  { name: "Experience", path: "/experience" },
-  { name: "Achievements", path: "/achievements" },
-  { name: "Blog", path: "/blog" },
-  { name: "Profiles", path: "/profiles" },
-  { name: "Contact", path: "/contact" },
+  { name: "Home", path: "/", navKey: "home" as const },
+  { name: "About", path: "/about", navKey: "about" as const },
+  { name: "Skills", path: "/skills", navKey: "skills" as const },
+  { name: "Projects", path: "/projects", navKey: "projects" as const },
+  { name: "Experience", path: "/experience", navKey: "experience" as const },
+  { name: "Achievements", path: "/achievements", navKey: "achievements" as const },
+  { name: "Blog", path: "/blog", navKey: "blog" as const },
+  { name: "Profiles", path: "/profiles", navKey: "profiles" as const },
+  { name: "Contact", path: "/contact", navKey: "contact" as const },
 ];
 
 export function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
+  const { lang, setLang, ui } = useLanguage();
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -48,6 +50,7 @@ export function Navbar() {
           <div className="hidden items-center gap-1 lg:flex">
             {routes.map((item) => {
               const isActive = pathname === item.path || (item.path !== "/" && pathname.startsWith(item.path));
+              const label = ui.nav[item.navKey] || item.name;
               return (
                 <Link
                   key={item.name}
@@ -58,18 +61,44 @@ export function Navbar() {
                       : "text-slate-600 hover:bg-slate-900/5 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
                   }`}
                 >
-                  {item.name}
+                  {label}
                 </Link>
               );
             })}
           </div>
 
           <div className="flex items-center gap-2">
+            {/* EN / JA Language Toggle Pill */}
+            <div className="flex items-center rounded-lg border border-slate-900/10 bg-slate-900/5 p-0.5 dark:border-white/10 dark:bg-white/5">
+              <button
+                onClick={() => setLang("en")}
+                className={`rounded-md px-2.5 py-1 text-xs font-mono font-bold transition cursor-pointer ${
+                  lang === "en"
+                    ? "bg-cyan-500 text-slate-950 shadow-sm"
+                    : "text-slate-600 hover:text-slate-950 dark:text-slate-400 dark:hover:text-white"
+                }`}
+                aria-label="Switch to English"
+              >
+                EN
+              </button>
+              <button
+                onClick={() => setLang("ja")}
+                className={`rounded-md px-2.5 py-1 text-xs font-mono font-bold transition cursor-pointer ${
+                  lang === "ja"
+                    ? "bg-cyan-500 text-slate-950 shadow-sm"
+                    : "text-slate-600 hover:text-slate-950 dark:text-slate-400 dark:hover:text-white"
+                }`}
+                aria-label="Switch to Japanese"
+              >
+                JA
+              </button>
+            </div>
+
             <button
               onClick={() => setCommandOpen(true)}
               className="hidden items-center gap-2 rounded-md border border-slate-900/10 px-3 py-2 text-sm text-slate-600 transition hover:border-cyan-500/50 hover:text-slate-950 dark:border-white/10 dark:text-slate-300 dark:hover:text-white sm:flex"
             >
-              <Command size={16} /> Ctrl K
+              <Command size={16} /> {ui.nav.ctrlK}
             </button>
             <button
               onClick={() => setMenuOpen((value) => !value)}
@@ -91,6 +120,7 @@ export function Navbar() {
               <div className="grid gap-1 px-4 py-3">
                 {routes.map((item) => {
                   const isActive = pathname === item.path || (item.path !== "/" && pathname.startsWith(item.path));
+                  const label = ui.nav[item.navKey] || item.name;
                   return (
                     <Link
                       key={item.name}
@@ -102,7 +132,7 @@ export function Navbar() {
                           : "text-slate-700 hover:bg-slate-900/5 dark:text-slate-200 dark:hover:bg-white/10"
                       }`}
                     >
-                      {item.name}
+                      {label}
                     </Link>
                   );
                 })}
@@ -130,20 +160,23 @@ export function Navbar() {
             >
               <div className="flex items-center gap-2 border-b border-slate-900/10 p-3 dark:border-white/10">
                 <Command size={18} />
-                <span className="text-sm font-medium">Quick Navigation</span>
+                <span className="text-sm font-medium">{ui.nav.quickNavigation}</span>
               </div>
               <div className="p-2">
-                {routes.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.path}
-                    onClick={() => setCommandOpen(false)}
-                    className="flex w-full items-center justify-between rounded-md px-3 py-3 text-left text-sm hover:bg-slate-900/5 dark:hover:bg-white/10"
-                  >
-                    <span>{item.name}</span>
-                    <ArrowRight size={15} />
-                  </Link>
-                ))}
+                {routes.map((item) => {
+                  const label = ui.nav[item.navKey] || item.name;
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.path}
+                      onClick={() => setCommandOpen(false)}
+                      className="flex w-full items-center justify-between rounded-md px-3 py-3 text-left text-sm hover:bg-slate-900/5 dark:hover:bg-white/10"
+                    >
+                      <span>{label}</span>
+                      <ArrowRight size={15} />
+                    </Link>
+                  );
+                })}
               </div>
             </motion.div>
           </motion.div>

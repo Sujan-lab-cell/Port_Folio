@@ -1,24 +1,128 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Bot, Sparkles, Zap, ShieldCheck, Cpu, Layers, Terminal, ArrowUpRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { Bot, Sparkles } from "lucide-react";
 import { portfolioData } from "@/src/data/portfolio";
+import { useLanguage } from "@/src/i18n";
 
 interface AIRobotHeroCanvasProps {
-  onAskQuestion: (prompt: string) => void;
+  onAskQuestion?: (prompt: string) => void;
 }
 
-const QUICK_PROMPTS = [
-  "Tell me about Sujan",
-  "What projects has he built?",
-  "What are his skills?",
-];
+interface ChatMessage {
+  id: string;
+  question: string;
+  answer: string | null;
+  error?: string | null;
+  isLoading?: boolean;
+}
 
 export function AIRobotHeroCanvas({ onAskQuestion }: AIRobotHeroCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
+  const { lang } = useLanguage();
+
+  // Robot speech bubble RAG chat conversation history state
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [customInput, setCustomInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  // i18n Labels
+  const titleText = lang === "ja" ? "AIポートフォリオアシスタント" : "AI Portfolio Assistant";
+  const placeholderText = lang === "ja" ? "スジャンについて何でも聞いてください..." : "Ask anything about Sujan...";
+  const askButtonText = lang === "ja" ? "質問" : "Ask";
+  const loadingText = lang === "ja" ? "回答を生成しています..." : "Generating grounded response...";
+  const greetingText = lang === "ja"
+    ? "「こんにちは！スジャンのAIアシスタントです。何でも質問してください！」"
+    : "“Hi! I’m Sujan’s AI Assistant — Ask me anything about his work!”";
+
+  const quickPrompts = lang === "ja"
+    ? [
+        "スジャンについて教えて",
+        "どんなプロジェクトを開発しましたか？",
+        "スキルを教えて",
+        "AIプロジェクトを見る",
+        "コンピュータビジョンのプロジェクトを見る",
+        "履歴書を見る",
+      ]
+    : [
+        "Tell me about Sujan",
+        "What projects has he built?",
+        "What are his skills?",
+        "Show AI projects",
+        "Show Computer Vision projects",
+        "Show resume",
+      ];
+
+  // Auto-scroll chat area internally to latest message
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, isLoading]);
+
+  const handleAskRobot = async (userPrompt: string) => {
+    if (!userPrompt.trim() || isLoading) return;
+    const questionText = userPrompt.trim();
+    const msgId = Date.now().toString() + Math.random().toString(36).substring(2, 5);
+
+    if (onAskQuestion) {
+      onAskQuestion(questionText);
+    }
+
+    setIsLoading(true);
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: msgId,
+        question: questionText,
+        answer: null,
+        isLoading: true,
+      },
+    ]);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: questionText, language: lang }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server error ${res.status}`);
+      }
+
+      const data = await res.json();
+      if (data.answer) {
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === msgId ? { ...msg, answer: data.answer, isLoading: false } : msg
+          )
+        );
+      } else if (data.error) {
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === msgId ? { ...msg, error: data.error, isLoading: false } : msg
+          )
+        );
+      }
+    } catch (err: any) {
+      console.error("Robot API chat error:", err);
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === msgId
+            ? { ...msg, error: err.message || "Failed to fetch response.", isLoading: false }
+            : msg
+        )
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Canvas interactive cyber particle & hologram orbital animation
   useEffect(() => {
@@ -153,35 +257,110 @@ export function AIRobotHeroCanvas({ onAskQuestion }: AIRobotHeroCanvasProps) {
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="absolute -top-16 z-30 w-72 rounded-2xl border border-cyan-500/40 bg-slate-950/90 p-4 shadow-[0_0_30px_rgba(34,211,238,0.3)] backdrop-blur-xl"
+          className="absolute -top-28 sm:-top-32 z-30 w-80 sm:w-96 rounded-2xl border border-cyan-500/40 bg-slate-950/95 p-4 shadow-[0_0_35px_rgba(34,211,238,0.35)] backdrop-blur-xl pointer-events-auto"
         >
           <div className="flex items-start gap-3">
             <div className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-400/30">
               <Bot size={18} />
             </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-mono font-bold tracking-wider text-cyan-300 uppercase">
-                  Sujan AI Assistant
-                </span>
-                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-mono font-bold tracking-wider text-cyan-300 uppercase">
+                    {titleText}
+                  </span>
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                </div>
+                {messages.length > 0 && (
+                  <button
+                    onClick={() => setMessages([])}
+                    disabled={isLoading}
+                    className="text-[10px] font-mono font-semibold text-cyan-400 hover:text-white cursor-pointer disabled:opacity-40"
+                  >
+                    {lang === "ja" ? "クリア" : "Clear"}
+                  </button>
+                )}
               </div>
-              <p className="mt-1 text-xs text-slate-200 leading-snug">
-                “Hi! I’m Sujan’s AI Assistant — Ask me anything about his work!”
-              </p>
+
+              {messages.length === 0 ? (
+                <p className="mt-1 text-xs text-slate-200 leading-snug">
+                  {greetingText}
+                </p>
+              ) : (
+                <div
+                  ref={scrollRef}
+                  onWheel={(e) => e.stopPropagation()}
+                  onTouchMove={(e) => e.stopPropagation()}
+                  className="mt-2 max-h-40 sm:max-h-52 overflow-y-auto pr-1.5 space-y-2 font-sans text-[11px] sm:text-xs scrollbar-thin cursor-auto pointer-events-auto select-text"
+                >
+                  {messages.map((item) => (
+                    <div key={item.id} className="rounded-lg bg-slate-900/80 p-2 border border-white/5 space-y-1">
+                      <div className="flex items-start gap-1 font-mono font-bold text-cyan-300 text-[11px]">
+                        <span className="text-slate-400 shrink-0">Q:</span>
+                        <span className="whitespace-pre-wrap text-cyan-200">{item.question}</span>
+                      </div>
+                      <div className="flex items-start gap-1 text-slate-200 leading-relaxed text-[11px] sm:text-xs">
+                        <span className="font-mono font-bold text-slate-400 shrink-0">A:</span>
+                        <div className="flex-1 min-w-0">
+                          {item.isLoading ? (
+                            <div className="flex items-center gap-1.5 text-cyan-400 font-mono animate-pulse py-0.5">
+                              <Sparkles size={13} className="animate-spin text-cyan-400 shrink-0" />
+                              <span>{loadingText}</span>
+                            </div>
+                          ) : item.error ? (
+                            <span className="text-rose-400 font-mono">{item.error}</span>
+                          ) : (
+                            <span className="whitespace-pre-wrap">{item.answer}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {QUICK_PROMPTS.map((prompt) => (
+
+          {/* Quick Prompts */}
+          <div className="mt-3 flex flex-wrap gap-1.5 border-t border-white/10 pt-2.5">
+            {quickPrompts.map((prompt) => (
               <button
                 key={prompt}
-                onClick={() => onAskQuestion(prompt)}
-                className="rounded-lg border border-cyan-500/30 bg-cyan-950/60 px-2.5 py-1 text-[11px] font-mono font-medium text-cyan-200 hover:border-cyan-400 hover:bg-cyan-500/30 hover:text-white transition cursor-pointer"
+                onClick={() => handleAskRobot(prompt)}
+                disabled={isLoading}
+                className="rounded-lg border border-cyan-500/30 bg-cyan-950/60 px-2 py-1 text-[10px] sm:text-[11px] font-mono font-medium text-cyan-200 transition hover:border-cyan-400 hover:bg-cyan-500/30 hover:text-white disabled:opacity-40 cursor-pointer"
               >
                 {prompt}
               </button>
             ))}
           </div>
+
+          {/* Custom Question Form */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (!customInput.trim() || isLoading) return;
+              handleAskRobot(customInput.trim());
+              setCustomInput("");
+            }}
+            className="mt-2.5 flex items-center gap-1.5"
+          >
+            <input
+              type="text"
+              value={customInput}
+              onChange={(e) => setCustomInput(e.target.value)}
+              placeholder={placeholderText}
+              disabled={isLoading}
+              className="min-w-0 flex-1 rounded-lg border border-cyan-500/30 bg-slate-900/90 px-2.5 py-1.5 text-[11px] font-mono text-white placeholder-slate-400 outline-none transition focus:border-cyan-400 disabled:opacity-50"
+            />
+            <button
+              type="submit"
+              disabled={!customInput.trim() || isLoading}
+              className="rounded-lg bg-cyan-500 px-3 py-1.5 text-[11px] font-mono font-bold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-40 disabled:hover:bg-cyan-500 cursor-pointer shrink-0"
+            >
+              {askButtonText}
+            </button>
+          </form>
         </motion.div>
 
         {/* 3D Cyber Vector Robot Head & Core */}

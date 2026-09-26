@@ -1,17 +1,19 @@
 "use client";
 
 import { BriefcaseBusiness, CheckCircle2, ExternalLink, FolderGit2 } from "lucide-react";
-import { portfolioData } from "@/src/data/portfolio";
 import { SectionHeading } from "@/src/components/SectionHeading";
+import { useLanguage } from "@/src/i18n";
 
 export function ExperienceClient() {
+  const { ui, portfolioData } = useLanguage();
+
   return (
     <div className="px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-8">
         <SectionHeading
-          eyebrow="Work Experience"
-          title="Hands-on Machine Learning Internships"
-          text="Practical industry engineering across search performance risk modeling, automated invoice parsing pipelines, and predictive machine learning systems."
+          eyebrow={ui.experiencePage.eyebrow}
+          title={ui.experiencePage.title}
+          text={ui.experiencePage.subtitle}
         />
 
         <div className="space-y-6">
@@ -37,7 +39,7 @@ export function ExperienceClient() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 rounded-lg border border-cyan-500/30 bg-cyan-500/10 px-3 py-1.5 text-xs font-mono font-medium text-cyan-700 dark:text-cyan-300 hover:bg-cyan-500/20 transition"
                     >
-                      <span>View Research Paper</span>
+                      <span>{ui.buttons.viewResearchPaper}</span>
                       <ExternalLink size={13} />
                     </a>
                   )}
@@ -49,7 +51,7 @@ export function ExperienceClient() {
                       className="inline-flex items-center gap-1.5 rounded-lg border border-slate-900/10 bg-slate-900/5 dark:border-white/10 dark:bg-white/5 px-3 py-1.5 text-xs font-mono font-medium text-slate-800 dark:text-slate-200 hover:border-cyan-500/40 hover:text-cyan-600 dark:hover:text-cyan-300 transition"
                     >
                       <FolderGit2 size={13} className="text-cyan-600 dark:text-cyan-400" />
-                      <span>GitHub Repo</span>
+                      <span>{ui.buttons.githubRepo}</span>
                       <ExternalLink size={11} />
                     </a>
                   )}
@@ -61,7 +63,7 @@ export function ExperienceClient() {
                       className="inline-flex items-center gap-1.5 rounded-lg border border-slate-900/10 bg-slate-900/5 dark:border-white/10 dark:bg-white/5 px-3 py-1.5 text-xs font-mono font-medium text-slate-800 dark:text-slate-200 hover:border-cyan-500/40 hover:text-cyan-600 dark:hover:text-cyan-300 transition"
                     >
                       <FolderGit2 size={13} className="text-cyan-600 dark:text-cyan-400" />
-                      <span>AI Info Repo</span>
+                      <span>{ui.buttons.aiInfoRepo}</span>
                       <ExternalLink size={11} />
                     </a>
                   )}
@@ -82,7 +84,7 @@ export function ExperienceClient() {
 
               <div className="mt-6 border-t border-slate-900/10 pt-4 dark:border-white/10">
                 <p className="mb-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
-                  Technologies & Methodologies
+                  {ui.experiencePage.techMethodologies}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {exp.tech?.map((tech) => (

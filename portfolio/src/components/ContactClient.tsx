@@ -14,8 +14,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { portfolioData } from "@/src/data/portfolio";
 import { SectionHeading } from "@/src/components/SectionHeading";
+import { useLanguage } from "@/src/i18n";
 
 export function ContactClient() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -23,6 +23,7 @@ export function ContactClient() {
   const [copiedMessage, setCopiedMessage] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [nextUrl, setNextUrl] = useState("");
+  const { ui, portfolioData } = useLanguage();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -60,9 +61,9 @@ export function ContactClient() {
       <div className="mx-auto max-w-7xl space-y-12">
         {/* Top Heading */}
         <SectionHeading
-          eyebrow="CONTACT"
-          title="Let’s build something intelligent."
-          text="Have a project, research idea, internship opportunity, or just want to connect? Send me a message."
+          eyebrow={ui.contactPage.eyebrow}
+          title={ui.contactPage.title}
+          text={ui.contactPage.subtitle}
         />
 
         {/* Desktop 2-Column Layout / Mobile Stack */}
@@ -81,7 +82,7 @@ export function ContactClient() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
                 </span>
-                <span>OPEN FOR AI/ML & RESEARCH ROLES</span>
+                <span>{ui.contactPage.availableBadge}</span>
               </div>
 
               <div>
@@ -104,7 +105,7 @@ export function ContactClient() {
                       </div>
                       <div>
                         <span className="block font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                          Email Address
+                          {ui.contactPage.emailLabel}
                         </span>
                         <a
                           href={`mailto:${portfolioData.email}`}
@@ -116,7 +117,7 @@ export function ContactClient() {
                     </div>
                     <button
                       onClick={handleCopyEmail}
-                      className="grid h-8 w-8 place-items-center rounded-lg border border-slate-900/10 text-slate-600 hover:border-cyan-500/50 hover:text-cyan-600 dark:border-white/10 dark:text-slate-300 dark:hover:text-cyan-300 transition"
+                      className="grid h-8 w-8 place-items-center rounded-lg border border-slate-900/10 text-slate-600 hover:border-cyan-500/50 hover:text-cyan-600 dark:border-white/10 dark:text-slate-300 dark:hover:text-cyan-300 transition cursor-pointer"
                       title="Copy email to clipboard"
                     >
                       {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
@@ -132,7 +133,7 @@ export function ContactClient() {
                     </div>
                     <div>
                       <span className="block font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                        Phone / WhatsApp
+                        {ui.contactPage.phoneLabel}
                       </span>
                       <a
                         href={`tel:${portfolioData.phone}`}
@@ -152,7 +153,7 @@ export function ContactClient() {
                     </div>
                     <div>
                       <span className="block font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                        Location
+                        {ui.contactPage.locationLabel}
                       </span>
                       <span className="font-mono text-sm font-semibold text-slate-900 dark:text-slate-200">
                         {portfolioData.location}
@@ -191,7 +192,7 @@ export function ContactClient() {
             </div>
           </motion.div>
 
-          {/* Right Column: Native Direct FormSubmit Form (7 Cols) */}
+          {/* Right Column: Native Direct FormSubmit Form */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -207,7 +208,7 @@ export function ContactClient() {
                 <span className="font-mono text-[11px] text-slate-400">Response within 24h</span>
               </div>
 
-              {/* Status Alert for verified FormSubmit return redirect */}
+              {/* Status Alert */}
               <AnimatePresence mode="wait">
                 {submitted && (
                   <motion.div
@@ -217,7 +218,7 @@ export function ContactClient() {
                     className="flex items-start gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-emerald-300 font-mono text-xs leading-relaxed"
                   >
                     <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-emerald-400" />
-                    <span>Message sent successfully! Thank you for reaching out. Sujan will get back to you soon.</span>
+                    <span>{ui.contactPage.successMessage}</span>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -228,7 +229,6 @@ export function ContactClient() {
                 method="POST"
                 className="space-y-5"
               >
-                {/* FormSubmit Hidden Configuration Parameters */}
                 <input type="hidden" name="_subject" value="Portfolio Contact — New Message" />
                 <input type="hidden" name="_template" value="table" />
                 <input type="hidden" name="_captcha" value="false" />
@@ -238,7 +238,7 @@ export function ContactClient() {
                 {/* Name Field */}
                 <div className="space-y-2">
                   <label htmlFor="contact-name" className="block font-mono text-xs font-semibold uppercase tracking-wider text-slate-300">
-                    Your Name <span className="text-cyan-400">*</span>
+                    {ui.contactPage.formName} <span className="text-cyan-400">*</span>
                   </label>
                   <input
                     id="contact-name"
@@ -247,7 +247,7 @@ export function ContactClient() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="e.g. Alex Rivera"
+                    placeholder={ui.contactPage.formNamePlaceholder}
                     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 font-mono text-sm text-white placeholder-slate-500 outline-none transition focus:border-cyan-400 focus:bg-white/[0.08]"
                   />
                 </div>
@@ -255,7 +255,7 @@ export function ContactClient() {
                 {/* Email Field */}
                 <div className="space-y-2">
                   <label htmlFor="contact-email" className="block font-mono text-xs font-semibold uppercase tracking-wider text-slate-300">
-                    Your Email Address <span className="text-cyan-400">*</span>
+                    {ui.contactPage.formEmail} <span className="text-cyan-400">*</span>
                   </label>
                   <input
                     id="contact-email"
@@ -264,7 +264,7 @@ export function ContactClient() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="e.g. alex@company.com"
+                    placeholder={ui.contactPage.formEmailPlaceholder}
                     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 font-mono text-sm text-white placeholder-slate-500 outline-none transition focus:border-cyan-400 focus:bg-white/[0.08]"
                   />
                 </div>
@@ -272,7 +272,7 @@ export function ContactClient() {
                 {/* Message Field */}
                 <div className="space-y-2">
                   <label htmlFor="contact-message" className="block font-mono text-xs font-semibold uppercase tracking-wider text-slate-300">
-                    Your Message <span className="text-cyan-400">*</span>
+                    {ui.contactPage.formMessage} <span className="text-cyan-400">*</span>
                   </label>
                   <textarea
                     id="contact-message"
@@ -281,7 +281,7 @@ export function ContactClient() {
                     rows={5}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Tell me about your project, research idea, or role..."
+                    placeholder={ui.contactPage.formMessagePlaceholder}
                     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 font-mono text-sm text-white placeholder-slate-500 outline-none transition focus:border-cyan-400 focus:bg-white/[0.08] resize-y"
                   />
                 </div>
@@ -292,17 +292,17 @@ export function ContactClient() {
                   className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-500 px-6 py-4 font-mono text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-400 hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
                 >
                   <Send size={18} />
-                  <span>Send Message</span>
+                  <span>{ui.buttons.sendMessage}</span>
                 </button>
 
-                {/* Quick Direct Actions: Open Email App to Send & Copy Email Body */}
+                {/* Quick Direct Actions */}
                 <div className="pt-3 flex flex-wrap gap-2.5 border-t border-white/10">
                   <a
                     href={mailtoUrl}
                     className="inline-flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-xs font-mono font-semibold text-slate-300 transition hover:bg-white/10 hover:text-cyan-300 hover:border-cyan-500/40"
                   >
                     <Mail size={15} />
-                    <span>Open Email App to Send</span>
+                    <span>Open Email App</span>
                   </a>
                   <button
                     type="button"
@@ -310,7 +310,7 @@ export function ContactClient() {
                     className="inline-flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-xs font-mono font-semibold text-slate-300 transition hover:bg-white/10 hover:text-cyan-300 hover:border-cyan-500/40 cursor-pointer"
                   >
                     {copiedMessage ? <Check size={15} className="text-emerald-400" /> : <Copy size={15} />}
-                    <span>{copiedMessage ? "Copied!" : "Copy Email Body"}</span>
+                    <span>{copiedMessage ? ui.buttons.copied : ui.buttons.copyEmail}</span>
                   </button>
                 </div>
               </form>

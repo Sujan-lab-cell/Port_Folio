@@ -3,13 +3,15 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { Search, Clock, Tag, ArrowRight, Sparkles, BookOpen, X, FlaskConical } from "lucide-react";
-import { portfolioData, BlogPost } from "@/src/data/portfolio";
+import { BlogPost } from "@/src/data/portfolio";
 import { SectionHeading } from "@/src/components/SectionHeading";
+import { useLanguage } from "@/src/i18n";
 
 export function BlogClient() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const { ui, portfolioData } = useLanguage();
 
   const posts = portfolioData.blog as BlogPost[];
 
@@ -66,9 +68,9 @@ export function BlogClient() {
     <div className="px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <SectionHeading
-          eyebrow="Technical Writing & Case Studies"
-          title="I build AI systems and write about what I learn."
-          text="Engineering notes, architectural choices, research findings, and technical breakdowns based on my actual AI/ML work across Computer Vision, Generative AI, NLP, and Medical AI research."
+          eyebrow={ui.blogPage.eyebrow}
+          title={ui.blogPage.title}
+          text={ui.blogPage.subtitle}
         />
 
         {/* Search & Filters Controls */}
@@ -80,7 +82,7 @@ export function BlogClient() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search technical articles by title, tag, or topic (e.g. YOLOv8, T5, WGAN-GP)..."
+              placeholder={ui.blogPage.searchPlaceholder}
               className="w-full rounded-xl border border-slate-900/10 bg-white/80 py-3.5 pl-12 pr-10 text-sm text-slate-900 placeholder-slate-500 shadow-sm backdrop-blur transition focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 dark:border-white/10 dark:bg-white/[0.05] dark:text-white dark:placeholder-slate-400 dark:focus:border-cyan-400"
             />
             {searchQuery && (

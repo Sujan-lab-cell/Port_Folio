@@ -17,11 +17,11 @@ import {
   Search,
   Sparkles,
   Layers,
-  Terminal,
   CheckCircle2,
+  Terminal,
 } from "lucide-react";
-import { portfolioData } from "@/src/data/portfolio";
 import { SectionHeading } from "@/src/components/SectionHeading";
+import { useLanguage } from "@/src/i18n";
 
 const iconMap = {
   Code2,
@@ -51,35 +51,18 @@ const categoryGlows = [
   "border-violet-500/30 hover:border-violet-400/60 hover:shadow-[0_0_25px_rgba(167,139,250,0.15)]",
 ];
 
-const CANONICAL_SKILL_ORDER = [
-  "Programming",
-  "AI / Machine Learning",
-  "Computer Vision",
-  "Speech / Multimodal AI",
-  "Data Science",
-  "Frameworks / Libraries",
-  "Backend / APIs / Deployment",
-  "Databases",
-  "Robotics & Automation",
-  "Tools / Platforms",
-  "CS Foundations",
-];
-
 export function SkillsClient() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
+  const { ui, portfolioData } = useLanguage();
 
   const totalSkillCount = useMemo(() => {
     return portfolioData.skills.reduce((acc, skill) => acc + skill.items.length, 0);
-  }, []);
+  }, [portfolioData]);
 
   const orderedSkills = useMemo(() => {
-    return [...portfolioData.skills].sort((a, b) => {
-      const idxA = CANONICAL_SKILL_ORDER.indexOf(a.group);
-      const idxB = CANONICAL_SKILL_ORDER.indexOf(b.group);
-      return (idxA === -1 ? 999 : idxA) - (idxB === -1 ? 999 : idxB);
-    });
-  }, []);
+    return portfolioData.skills;
+  }, [portfolioData]);
 
   const filteredSkills = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -103,9 +86,9 @@ export function SkillsClient() {
       <div className="mx-auto max-w-7xl space-y-12">
         {/* Header Section */}
         <SectionHeading
-          eyebrow="Technical Stack"
-          title="Technical Skills & Expertise"
-          text="A comprehensive overview of programming languages, machine learning frameworks, computer vision toolkits, robotics, and core CS foundations."
+          eyebrow={ui.skillsPage.eyebrow}
+          title={ui.skillsPage.title}
+          text={ui.skillsPage.subtitle}
         />
 
         {/* Quick Stats Overview Banner */}
@@ -113,30 +96,24 @@ export function SkillsClient() {
           <div className="rounded-xl border border-cyan-500/20 bg-white/70 p-5 backdrop-blur dark:border-cyan-500/20 dark:bg-slate-950/60">
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono font-semibold uppercase tracking-wider text-cyan-600 dark:text-cyan-300">
-                Total Skills & Tools
+                {ui.skillsPage.totalSkillsLabel}
               </span>
               <Sparkles size={18} className="text-cyan-500" />
             </div>
             <p className="mt-2 text-3xl font-bold font-mono text-slate-950 dark:text-white">
               {totalSkillCount}+
             </p>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-              Verified hands-on technologies
-            </p>
           </div>
 
           <div className="rounded-xl border border-emerald-500/20 bg-white/70 p-5 backdrop-blur dark:border-emerald-500/20 dark:bg-slate-950/60">
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-300">
-                Technical Domains
+                {ui.skillsPage.domainsLabel}
               </span>
               <Layers size={18} className="text-emerald-500" />
             </div>
             <p className="mt-2 text-3xl font-bold font-mono text-slate-950 dark:text-white">
               {portfolioData.skills.length}
-            </p>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-              Categorized stack areas
             </p>
           </div>
 
@@ -150,9 +127,6 @@ export function SkillsClient() {
             <p className="mt-2 text-xl font-bold text-slate-950 dark:text-white">
               AI / ML & Robotics
             </p>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-              CV, ROS2, Deep Learning & NLP
-            </p>
           </div>
 
           <div className="rounded-xl border border-purple-500/20 bg-white/70 p-5 backdrop-blur dark:border-purple-500/20 dark:bg-slate-950/60">
@@ -164,9 +138,6 @@ export function SkillsClient() {
             </div>
             <p className="mt-2 text-xl font-bold text-slate-950 dark:text-white">
               Verified Stack
-            </p>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-              No arbitrary percentage numbers
             </p>
           </div>
         </div>
@@ -182,13 +153,13 @@ export function SkillsClient() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search skills (e.g. Python, YOLO, PyTorch, ROS2, Docker, Scikit-learn)..."
+              placeholder={ui.skillsPage.searchPlaceholder}
               className="w-full rounded-xl border border-slate-900/10 bg-white/80 py-3.5 pl-11 pr-4 text-sm text-slate-950 placeholder-slate-400 outline-none transition focus:border-cyan-500 dark:border-white/10 dark:bg-white/[0.05] dark:text-white dark:placeholder-slate-500"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-cyan-500 hover:underline"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-cyan-500 hover:underline cursor-pointer"
               >
                 Clear
               </button>
@@ -205,7 +176,7 @@ export function SkillsClient() {
                   : "border border-slate-900/10 bg-white/60 text-slate-600 hover:border-cyan-500/50 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"
               }`}
             >
-              All Domains ({portfolioData.skills.length})
+              {ui.skillsPage.allDomains} ({portfolioData.skills.length})
             </button>
             {orderedSkills.map((skill) => (
               <button
@@ -227,19 +198,16 @@ export function SkillsClient() {
         {filteredSkills.length === 0 ? (
           <div className="rounded-xl border border-slate-900/10 bg-white/60 p-12 text-center backdrop-blur dark:border-white/10 dark:bg-white/[0.04]">
             <p className="text-lg font-medium text-slate-700 dark:text-slate-300">
-              No skills match &quot;{searchQuery}&quot;
-            </p>
-            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-              Try searching for &quot;Python&quot;, &quot;Vision&quot;, &quot;ROS2&quot;, or reset filters.
+              {ui.skillsPage.noSkillsFound}
             </p>
             <button
               onClick={() => {
                 setSearchQuery("");
                 setActiveCategory("all");
               }}
-              className="mt-4 rounded-lg bg-cyan-500 px-4 py-2 text-xs font-semibold text-slate-950"
+              className="mt-4 rounded-lg bg-cyan-500 px-4 py-2 text-xs font-semibold text-slate-950 cursor-pointer"
             >
-              Reset Filters
+              {ui.buttons.clearFilters}
             </button>
           </div>
         ) : (

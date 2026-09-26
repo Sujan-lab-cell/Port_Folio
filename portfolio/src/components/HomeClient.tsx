@@ -4,35 +4,24 @@ import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
-  Bot,
   Download,
   Mail,
   Sparkles,
   Terminal,
-  Code2,
   RotateCcw,
+  FileText,
+  ExternalLink,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { portfolioData } from "@/src/data/portfolio";
 import { IntroScreen } from "@/src/components/IntroScreen";
 import { AIRobotHeroCanvas } from "@/src/components/AIRobotHeroCanvas";
-
-const assistantAnswers: Record<string, string> = {
-  "Tell me about Sujan":
-    "Sujan K S is an AI/ML Engineer from Mangalore focused on computer vision, deep learning, NLP systems, and practical AI products.",
-  "What projects has he built?":
-    "His featured work includes GeoSentinel, SmartQ Generator, AI Face Generation, YOLOv8 car and pedestrian detection, and a Power BI e-commerce dashboard.",
-  "What are his skills?":
-    "Python, C, C++, TensorFlow, PyTorch, YOLOv8, Hugging Face, OpenCV, Scikit-learn, Streamlit, Roboflow, SQL, and core CS fundamentals.",
-  "Show AI projects": "Navigate to Projects to see GeoSentinel, SmartQ Generator, AI Face Generation, and YOLOv8 detection.",
-  "Show Computer Vision projects": "The strongest CV projects are GeoSentinel and Car & Pedestrian Detection, both powered by YOLOv8 workflows.",
-  "Show resume": "Check the About page or use the Download Resume button to access Sujan's resume.",
-};
+import { useLanguage } from "@/src/i18n";
 
 export function HomeClient() {
   const [mounted, setMounted] = useState(false);
   const [showIntro, setShowIntro] = useState(false);
-  const [assistantPrompt, setAssistantPrompt] = useState("Tell me about Sujan");
+  const { lang, ui, portfolioData } = useLanguage();
+
   const [terminalInput, setTerminalInput] = useState("help");
 
   useEffect(() => {
@@ -71,27 +60,17 @@ export function HomeClient() {
     setShowIntro(true);
   };
 
-  const handleAskAssistant = (prompt: string) => {
-    if (assistantAnswers[prompt]) {
-      setAssistantPrompt(prompt);
-    } else {
-      setAssistantPrompt("Tell me about Sujan");
-    }
-    const element = document.getElementById("ai-assistant-section");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   const terminalOutput = useMemo(() => {
     const command = terminalInput.trim().toLowerCase();
     if (command === "about") return portfolioData.about.careerObjective;
     if (command === "projects") return portfolioData.projects.map((project) => project.title).join(" | ");
     if (command === "skills") return portfolioData.skills.map((skill) => skill.group).join(" | ");
-    if (command === "resume") return "Resume: B.Tech AIML, CGPA 8.56, ML intern, AI/CV/NLP project portfolio.";
+    if (command === "resume") return `Resume: ${portfolioData.about.education.degree}, CGPA ${portfolioData.about.education.cgpa}.`;
     if (command === "contact") return `${portfolioData.email} | ${portfolioData.social.linkedin}`;
-    return "Available commands: help, about, projects, skills, resume, contact";
-  }, [terminalInput]);
+    return lang === "ja"
+      ? "使用可能なコマンド: help, about, projects, skills, resume, contact"
+      : "Available commands: help, about, projects, skills, resume, contact";
+  }, [terminalInput, portfolioData, lang]);
 
   return (
     <>
@@ -112,7 +91,7 @@ export function HomeClient() {
           {/* Top Floating Badge Bar */}
           <div className="relative z-20 mb-4 flex flex-wrap items-center justify-between gap-4">
             <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-400/10 px-4 py-2 text-xs sm:text-sm font-medium text-cyan-700 dark:text-cyan-200 backdrop-blur-md">
-              <Sparkles size={16} className="text-cyan-400 animate-pulse" /> Available for AI/ML internships & research-driven product work
+              <Sparkles size={16} className="text-cyan-400 animate-pulse" /> {ui.home.availableForWork}
             </div>
 
             <button
@@ -121,7 +100,7 @@ export function HomeClient() {
               title="Replay Futuristic AI Intro"
             >
               <RotateCcw size={13} className="text-cyan-500" />
-              <span>Replay 3D Intro</span>
+              <span>{ui.buttons.replay3dIntro}</span>
             </button>
           </div>
 
@@ -156,19 +135,27 @@ export function HomeClient() {
                   download
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-slate-950 to-slate-900 px-6 py-3.5 text-sm font-semibold text-white shadow-xl shadow-cyan-500/10 transition hover:scale-105 dark:from-white dark:to-slate-100 dark:text-slate-950"
                 >
-                  <Download size={18} /> Download Resume
+                  <Download size={18} /> {ui.buttons.downloadResume}
+                </a>
+                <a
+                  href="/images/SUJAN_KS_Inter (3).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-cyan-500/40 bg-cyan-500/10 px-6 py-3.5 text-sm font-semibold text-cyan-700 dark:text-cyan-300 backdrop-blur transition hover:border-cyan-400 hover:bg-cyan-500/20 hover:scale-105 cursor-pointer"
+                >
+                  <FileText size={18} /> {ui.buttons.japaneseResume} <ExternalLink size={16} />
                 </a>
                 <Link
                   href="/projects"
                   className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-900/15 bg-white/50 px-6 py-3.5 text-sm font-semibold text-slate-800 backdrop-blur transition hover:border-cyan-500/60 hover:bg-cyan-400/10 dark:border-white/15 dark:bg-white/5 dark:text-white"
                 >
-                  View Projects <ArrowRight size={18} />
+                  {ui.buttons.viewProjects} <ArrowRight size={18} />
                 </Link>
                 <Link
                   href="/contact"
                   className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-900/15 bg-white/50 px-6 py-3.5 text-sm font-semibold text-slate-800 backdrop-blur transition hover:border-cyan-500/60 hover:bg-cyan-400/10 dark:border-white/15 dark:bg-white/5 dark:text-white"
                 >
-                  <Mail size={18} /> Contact
+                  <Mail size={18} /> {ui.buttons.contact}
                 </Link>
               </div>
             </motion.div>
@@ -180,7 +167,7 @@ export function HomeClient() {
               transition={{ duration: 0.9, delay: 0.2 }}
               className="relative flex items-center justify-center"
             >
-              <AIRobotHeroCanvas onAskQuestion={handleAskAssistant} />
+              <AIRobotHeroCanvas />
             </motion.div>
           </div>
         </section>
@@ -191,17 +178,17 @@ export function HomeClient() {
             <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-500 dark:text-cyan-300">
-                  Featured Work
+                  {ui.home.featuredWorkEyebrow}
                 </p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-4xl">
-                  Impact-first AI Systems
+                  {ui.home.featuredWorkTitle}
                 </h2>
               </div>
               <Link
                 href="/projects"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-600 hover:text-cyan-500 dark:text-cyan-400 dark:hover:text-cyan-300"
               >
-                Explore all projects <ArrowRight size={16} />
+                {ui.buttons.exploreAllProjects} <ArrowRight size={16} />
               </Link>
             </div>
 
@@ -229,7 +216,7 @@ export function HomeClient() {
                       href={`/projects/${project.slug}`}
                       className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-600 hover:text-cyan-500 dark:text-cyan-400"
                     >
-                      Read Case Study <ArrowRight size={15} />
+                      {ui.buttons.readCaseStudy} <ArrowRight size={15} />
                     </Link>
                   </div>
                 </motion.article>
@@ -238,41 +225,16 @@ export function HomeClient() {
           </div>
         </section>
 
-        {/* Interactive AI Assistant & Terminal */}
+        {/* Developer Terminal Section */}
         <section id="ai-assistant-section" className="px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-2">
-            <div className="rounded-xl border border-slate-900/10 bg-white/75 p-6 backdrop-blur dark:border-white/10 dark:bg-white/[0.06]">
-              <div className="mb-4 flex items-center gap-2">
-                <Bot className="text-cyan-500" />
-                <h2 className="text-2xl font-semibold text-slate-950 dark:text-white">AI Portfolio Assistant</h2>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {Object.keys(assistantAnswers).map((prompt) => (
-                  <button
-                    key={prompt}
-                    onClick={() => setAssistantPrompt(prompt)}
-                    className={`rounded-md border px-3 py-2 text-sm transition cursor-pointer ${
-                      assistantPrompt === prompt
-                        ? "border-cyan-500 bg-cyan-500/10 font-medium text-cyan-600 dark:text-cyan-300"
-                        : "border-slate-900/10 hover:border-cyan-500/60 dark:border-white/10"
-                    }`}
-                  >
-                    {prompt}
-                  </button>
-                ))}
-              </div>
-              <div className="mt-5 rounded-lg bg-slate-950 p-4 text-sm leading-6 text-cyan-50 shadow-inner">
-                {assistantAnswers[assistantPrompt]}
-              </div>
-            </div>
-
+          <div className="mx-auto max-w-4xl">
             <div className="rounded-xl border border-slate-900/10 bg-slate-950 p-6 font-mono text-sm text-cyan-50 shadow-xl dark:border-white/10">
               <div className="mb-4 flex items-center gap-2">
                 <Terminal size={18} />
-                <span className="text-slate-400">terminal mode</span>
+                <span className="text-slate-400">{ui.home.terminalMode}</span>
               </div>
               <div className="flex gap-2">
-                <span className="text-emerald-400">sujan@portfolio:~$</span>
+                <span className="text-emerald-400">{ui.home.terminalPrompt}</span>
                 <input
                   value={terminalInput}
                   onChange={(event) => setTerminalInput(event.target.value)}

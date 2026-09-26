@@ -1,17 +1,19 @@
 "use client";
 
 import { ExternalLink, Code2, Trophy, BriefcaseBusiness } from "lucide-react";
-import { portfolioData } from "@/src/data/portfolio";
 import { SectionHeading } from "@/src/components/SectionHeading";
+import { useLanguage } from "@/src/i18n";
 
 export function ProfilesClient() {
+  const { ui, portfolioData } = useLanguage();
+
   return (
     <div className="px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <SectionHeading
-          eyebrow="Coding Profiles"
-          title="Public proof of practice."
-          text="API-ready profile cards for GitHub, LeetCode, Kaggle, and LinkedIn integrations."
+          eyebrow={ui.profilesPage.eyebrow}
+          title={ui.profilesPage.title}
+          text={ui.profilesPage.subtitle}
         />
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -42,7 +44,7 @@ export function ProfilesClient() {
                 </div>
 
                 <div className="mt-6 border-t border-slate-900/10 pt-4 text-xs font-semibold text-cyan-600 dark:border-white/10 dark:text-cyan-300">
-                  Visit Profile →
+                  {ui.buttons.viewProject} →
                 </div>
               </a>
             );

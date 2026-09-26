@@ -22,7 +22,7 @@ async function runTestPipeline() {
     console.log(`======================================================================\n`);
 
     // 1. Hybrid Retrieval & Reranking
-    const rerankedChunks = await performHybridRetrieval(query, 30, 5);
+    const { topChunks: rerankedChunks } = await performHybridRetrieval(query, 30, 5);
 
     console.log(`--- 1. RETRIEVED & RERANKED TOP CHUNKS ---`);
     rerankedChunks.forEach((item, index) => {
